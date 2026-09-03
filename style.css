@@ -1,7 +1,7 @@
 :root {
   --yellow: #ffd43b;
   --dark: #171717;
-  --cream: #e9b949;
+  --cream: #f2f2f2;
   --red: #e84c3d;
   --white: #ffffff;
   --muted: #746f64;
@@ -47,7 +47,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
 .button-dark { color: var(--white); background: var(--dark); box-shadow: 0 12px 28px rgba(23,23,23,.16); }
 .button-dark:hover { background: #2a2a2a; }
 
-.hero { position: relative; min-height: calc(100vh - 88px); min-height: 760px; display: flex; align-items: center; overflow: hidden; background-image: linear-gradient(rgba(23,23,23,.028) 1px, transparent 1px), linear-gradient(90deg, rgba(23,23,23,.028) 1px, transparent 1px); background-size: 72px 72px; }
+.hero { position: relative; min-height: calc(100vh - 88px); min-height: 760px; display: flex; align-items: center; overflow: hidden; background-color: #e9b949; background-image: linear-gradient(rgba(23,23,23,.028) 1px, transparent 1px), linear-gradient(90deg, rgba(23,23,23,.028) 1px, transparent 1px); background-size: 72px 72px; }
 .hero::before { content: "MINI BITES"; position: absolute; left: -25px; bottom: -20px; color: rgba(23,23,23,.035); font-family: "Manrope", sans-serif; font-size: 150px; font-weight: 800; letter-spacing: -.08em; white-space: nowrap; }
 .hero-grid { display: grid; grid-template-columns: .88fr 1.12fr; align-items: center; gap: 68px; padding-top: 58px; padding-bottom: 58px; }
 .hero-copy { position: relative; z-index: 2; }
