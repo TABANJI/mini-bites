@@ -48,3 +48,38 @@ document.querySelectorAll('.add-button').forEach((button) => {
 });
 
 document.getElementById('year').textContent = new Date().getFullYear();
+
+const menuToggle = document.querySelector('.menu-toggle');
+const mobileMenu = document.querySelector('.main-nav');
+const menuBackdrop = document.querySelector('.menu-backdrop');
+
+const closeMenu = () => {
+  menuToggle.setAttribute('aria-expanded', 'false');
+  menuToggle.setAttribute('aria-label', 'Open menu');
+  mobileMenu.classList.remove('is-open');
+  menuBackdrop.classList.remove('is-visible');
+  document.body.classList.remove('menu-open');
+};
+
+const openMenu = () => {
+  menuToggle.setAttribute('aria-expanded', 'true');
+  menuToggle.setAttribute('aria-label', 'Close menu');
+  mobileMenu.classList.add('is-open');
+  menuBackdrop.classList.add('is-visible');
+  document.body.classList.add('menu-open');
+};
+
+menuToggle.addEventListener('click', () => {
+  const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+  isOpen ? closeMenu() : openMenu();
+});
+
+mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+menuBackdrop.addEventListener('click', closeMenu);
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeMenu();
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) closeMenu();
+});
