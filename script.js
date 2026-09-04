@@ -17,6 +17,13 @@ const mobileMenuSections = [
   { id: 'desserts', label: 'DESSERTS' }
 ];
 
+const mobileMainSections = [
+  { id: 'mini-bites', targetId: 'mana2eesh', label: 'MINI BITES' },
+  { id: 'sandwiches-burgers', targetId: 'burger-sandwich', label: 'BURGER / SANDWICH' },
+  { id: 'drinks', targetId: 'drinks-menu', label: 'DRINKS' },
+  { id: 'gift-certificates', targetId: 'gift-certificates-menu', label: 'GIFT CERTIFICATES' }
+];
+
 const menuItems = [
   { id: 'mana-zaatar', name: 'Zaatar', category: 'mana2eesh', price: 70000, priceLabel: '70,000 LL', description: '', image: null, options: [vegetableOption], popular: true, filters: ['zaatar'] },
   { id: 'mana-cheese', name: 'Cheese', category: 'mana2eesh', price: 180000, priceLabel: '180,000 LL', description: '', image: null, options: [vegetableOption], popular: false, filters: ['cheese'] },
@@ -88,31 +95,44 @@ const setActiveSubcategory = (filterId, center = true) => {
   if (center) activeButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
 };
 
+const setActiveMainSection = (sectionId, center = true) => {
+  activeMainSection = sectionId;
+  const activeButton = categoryRow.querySelector(`[data-main-section="${sectionId}"]`);
+  categoryRow.querySelector('.active')?.classList.remove('active');
+  activeButton?.classList.add('active');
+  if (sectionId !== 'mini-bites') subcategoryRow.querySelector('.active')?.classList.remove('active');
+  if (center) activeButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+};
+
 const startScrollSpy = () => {
   scrollSpyObserver?.disconnect();
   if (window.innerWidth > 768 || !('IntersectionObserver' in window)) return;
-  const groups = [...productGrid.querySelectorAll('.product-group[data-filter]')];
+  const groups = [...productGrid.querySelectorAll('.product-group[data-main-section]')];
   if (!groups.length) return;
+  const visibility = new Map(groups.map((group) => [group, false]));
 
   scrollSpyObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => visibility.set(entry.target, entry.isIntersecting));
     if (Date.now() < scrollSpyPausedUntil) return;
-    const visible = entries.filter((entry) => entry.isIntersecting);
+    const visible = groups.filter((group) => visibility.get(group));
     if (!visible.length) return;
-    visible.sort((a, b) => Math.abs(a.boundingClientRect.top - 226) - Math.abs(b.boundingClientRect.top - 226));
-    const nextFilter = visible[0].target.dataset.filter;
-    if (nextFilter !== activeFilter) setActiveSubcategory(nextFilter);
+    const probeY = 226;
+    const currentGroup = visible.find((group) => {
+      const rect = group.getBoundingClientRect();
+      return rect.top <= probeY && rect.bottom > probeY;
+    }) || visible.sort((a, b) => Math.abs(a.getBoundingClientRect().top - probeY) - Math.abs(b.getBoundingClientRect().top - probeY))[0];
+    const nextMainSection = currentGroup.dataset.mainSection;
+    if (nextMainSection !== activeMainSection) setActiveMainSection(nextMainSection);
+    if (nextMainSection === 'mini-bites') {
+      const nextFilter = currentGroup.dataset.filter;
+      if (nextFilter && (nextFilter !== activeFilter || !subcategoryRow.querySelector('.active'))) setActiveSubcategory(nextFilter);
+    }
   }, { rootMargin: '-226px 0px -58% 0px', threshold: 0 });
 
   groups.forEach((group) => scrollSpyObserver.observe(group));
 };
 
 const renderProducts = () => {
-  if (window.innerWidth <= 768 && (activeMainSection === 'drinks' || activeMainSection === 'gift-certificates')) {
-    productGrid.innerHTML = '<p class="menu-empty">No items in this section yet.</p>';
-    startScrollSpy();
-    return;
-  }
-
   if (window.innerWidth > 768) {
     const items = itemsForCategory(activeCategory);
     productGrid.innerHTML = items.map(productCardTemplate).join('');
@@ -120,18 +140,19 @@ const renderProducts = () => {
     return;
   }
 
-  if (activeMainSection === 'sandwiches-burgers') {
-    productGrid.innerHTML = `<section class="product-group" id="burger-sandwich">${itemsForCategory('burger-sandwich').map(productCardTemplate).join('')}</section>`;
-    startScrollSpy();
-    return;
-  }
-
-  productGrid.innerHTML = mobileMenuSections.map((section, index) => {
+  const miniBitesSections = mobileMenuSections.map((section, index) => {
     const sectionItems = itemsForCategory(section.id);
-    if (!sectionItems.length) return '';
     const heading = index === 0 ? '' : `<div class="mobile-menu-heading"><span>MINI BITES</span><h2>${section.label}</h2></div>`;
-    return `<section class="product-group" id="${section.id}" data-filter="${section.id}">${heading}${sectionItems.map(productCardTemplate).join('')}</section>`;
+    return `<section class="product-group" id="${section.id}" data-main-section="mini-bites" data-filter="${section.id}">${heading}${sectionItems.map(productCardTemplate).join('')}</section>`;
   }).join('');
+
+  const burgerItems = itemsForCategory('burger-sandwich');
+  const remainingSections = `
+    <section class="product-group" id="burger-sandwich" data-main-section="sandwiches-burgers"><div class="mobile-menu-heading"><span>MINI BITES</span><h2>BURGER / SANDWICH</h2></div>${burgerItems.map(productCardTemplate).join('')}</section>
+    <section class="product-group" id="drinks-menu" data-main-section="drinks"><div class="mobile-menu-heading"><span>MINI BITES</span><h2>DRINKS</h2></div><p class="menu-empty">No items in this section yet.</p></section>
+    <section class="product-group" id="gift-certificates-menu" data-main-section="gift-certificates"><div class="mobile-menu-heading"><span>MINI BITES</span><h2>GIFT CERTIFICATES</h2></div><p class="menu-empty">No items in this section yet.</p></section>`;
+
+  productGrid.innerHTML = miniBitesSections + remainingSections;
   startScrollSpy();
 };
 
@@ -199,19 +220,15 @@ categoryRow.addEventListener('click', (event) => {
   const button = event.target.closest('button[data-main-section]');
   if (!button) return;
   const nextMainSection = button.dataset.mainSection;
-  activeMainSection = nextMainSection;
-  activeCategory = nextMainSection === 'sandwiches-burgers' ? 'burger-sandwich' : 'mana2eesh';
-  activeFilter = nextMainSection === 'sandwiches-burgers' ? 'burger-sandwich' : 'mana2eesh';
+  const wasQuickView = quickView !== 'all';
   quickView = 'all';
-  categoryHeading.textContent = nextMainSection === 'sandwiches-burgers' ? 'BURGER / SANDWICH' : nextMainSection === 'drinks' || nextMainSection === 'gift-certificates' ? nextMainSection.replace('-', ' ').toUpperCase() : 'MANA2EESH';
-  categoryRow.querySelector('.active')?.classList.remove('active');
-  button.classList.add('active');
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
   scrollSpyPausedUntil = Date.now() + 700;
-  renderSubcategories();
-  renderProducts();
-  button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  const target = nextMainSection === 'sandwiches-burgers' ? document.getElementById('burger-sandwich') : document.getElementById('best-sellers');
+  if (wasQuickView) renderProducts();
+  setActiveMainSection(nextMainSection);
+  if (nextMainSection === 'mini-bites') setActiveSubcategory('mana2eesh');
+  const targetId = mobileMainSections.find((section) => section.id === nextMainSection)?.targetId;
+  const target = document.getElementById(targetId);
   target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
@@ -238,11 +255,7 @@ subcategoryRow.addEventListener('click', (event) => {
   setActiveSubcategory(filterId);
   if (wasQuickView) renderProducts();
   if (activeMainSection !== 'mini-bites') {
-    activeMainSection = 'mini-bites';
-    categoryHeading.textContent = 'MANA2EESH';
-    categoryRow.querySelector('.active')?.classList.remove('active');
-    categoryRow.querySelector('[data-main-section="mini-bites"]')?.classList.add('active');
-    renderProducts();
+    setActiveMainSection('mini-bites');
   }
   const target = document.getElementById(filterId);
   target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
