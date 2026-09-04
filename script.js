@@ -14,7 +14,6 @@ const mobileMenuSections = [
   { id: 'mana2eesh', label: 'MANA2EESH' },
   { id: 'italian-pizza', label: 'ITALIAN PIZZA' },
   { id: 'mu3ajaneit', label: 'MU3AJANEIT' },
-  { id: 'burger-sandwich', label: 'BURGER / SANDWICH' },
   { id: 'desserts', label: 'DESSERTS' }
 ];
 
@@ -121,6 +120,12 @@ const renderProducts = () => {
     return;
   }
 
+  if (activeMainSection === 'sandwiches-burgers') {
+    productGrid.innerHTML = `<section class="product-group" id="burger-sandwich">${itemsForCategory('burger-sandwich').map(productCardTemplate).join('')}</section>`;
+    startScrollSpy();
+    return;
+  }
+
   productGrid.innerHTML = mobileMenuSections.map((section, index) => {
     const sectionItems = itemsForCategory(section.id);
     if (!sectionItems.length) return '';
@@ -198,7 +203,7 @@ categoryRow.addEventListener('click', (event) => {
   activeCategory = nextMainSection === 'sandwiches-burgers' ? 'burger-sandwich' : 'mana2eesh';
   activeFilter = nextMainSection === 'sandwiches-burgers' ? 'burger-sandwich' : 'mana2eesh';
   quickView = 'all';
-  categoryHeading.textContent = nextMainSection === 'drinks' || nextMainSection === 'gift-certificates' ? nextMainSection.replace('-', ' ').toUpperCase() : 'MANA2EESH';
+  categoryHeading.textContent = nextMainSection === 'sandwiches-burgers' ? 'BURGER / SANDWICH' : nextMainSection === 'drinks' || nextMainSection === 'gift-certificates' ? nextMainSection.replace('-', ' ').toUpperCase() : 'MANA2EESH';
   categoryRow.querySelector('.active')?.classList.remove('active');
   button.classList.add('active');
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
@@ -232,7 +237,7 @@ subcategoryRow.addEventListener('click', (event) => {
   scrollSpyPausedUntil = Date.now() + 700;
   setActiveSubcategory(filterId);
   if (wasQuickView) renderProducts();
-  if (activeMainSection !== 'mini-bites' && activeMainSection !== 'sandwiches-burgers') {
+  if (activeMainSection !== 'mini-bites') {
     activeMainSection = 'mini-bites';
     categoryHeading.textContent = 'MANA2EESH';
     categoryRow.querySelector('.active')?.classList.remove('active');
