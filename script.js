@@ -83,3 +83,17 @@ document.addEventListener('keydown', (event) => {
 window.addEventListener('resize', () => {
   if (window.innerWidth > 768) closeMenu();
 });
+
+document.querySelectorAll('.mobile-category-row, .mobile-subcategory-row').forEach((row) => {
+  row.querySelectorAll('button').forEach((button) => {
+    button.addEventListener('click', () => {
+      row.querySelector('.active')?.classList.remove('active');
+      button.classList.add('active');
+      button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+
+      if (window.innerWidth <= 768) {
+        document.getElementById('best-sellers').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});
