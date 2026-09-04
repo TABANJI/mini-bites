@@ -269,7 +269,3 @@ mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click'
 menuBackdrop.addEventListener('click', closeMenu);
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
 window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
-document.querySelector('.back-button').addEventListener('click', () => {
-  if (window.history.length > 1) window.history.back();
-  else document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
-});
