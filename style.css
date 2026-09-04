@@ -178,13 +178,16 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
 
 @media (max-width: 768px) {
   html { scroll-padding-top: 226px; }
-  body { --mobile-order-bg: #fafafa; --mobile-heading-bg: #eeeeee; --mobile-accent: var(--brand-yellow); min-width: 0; background: var(--mobile-order-bg); overflow-x: hidden; }
+  body { --brand-yellow: #f2c94c; --yellow: var(--brand-yellow); --mobile-order-bg: #ffffff; --mobile-heading-bg: #eeeeee; --mobile-accent: var(--brand-yellow); min-width: 0; background: var(--mobile-order-bg); overflow-x: hidden; }
   body.menu-open { overflow: hidden; }
+  .button-yellow { box-shadow: 0 10px 30px rgba(242,201,76,.16); }
+  .button-yellow:hover { box-shadow: 0 14px 34px rgba(242,201,76,.27); }
+  .specials-panel::before { border-color: rgba(242,201,76,.12); }
   .container { width: calc(100% - 48px); }
   .section { padding: 52px 0; }
   h2 { font-size: clamp(34px, 9vw, 48px); }
 
-  .site-header { position: sticky; z-index: 100; top: 0; height: 72px; color: var(--dark); background: var(--white); border-bottom: 1px solid var(--line); }
+  .site-header { position: sticky; z-index: 100; top: 0; height: 72px; color: var(--dark); background: var(--mobile-heading-bg); border-bottom: 1px solid var(--line); }
   .site-header .container { width: calc(100% - 32px); }
   .header-inner { position: relative; z-index: 102; display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 8px; }
   .back-button { display: grid; place-items: center; width: 48px; height: 48px; padding: 0; color: var(--dark); background: transparent; border: 0; border-radius: 0; cursor: pointer; font-size: 24px; }
@@ -227,7 +230,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .mobile-category-row button.active { color: var(--mobile-accent); }
   .mobile-category-row button.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--mobile-accent); }
   .mobile-subcategory-row button { min-height: 30px; padding: 0 8px; color: var(--muted); background: transparent !important; border: 0 !important; border-radius: 0 !important; font-size: 12px; }
-  .mobile-subcategory-row button.active { color: var(--dark); background: rgba(255,212,59,.22) !important; border-radius: 5px !important; }
+  .mobile-subcategory-row button.active { color: var(--dark); background: rgba(242,201,76,.22) !important; border-radius: 5px !important; }
 
   .hero { display: none !important; }
   .hero::before { font-size: 88px; }
@@ -257,7 +260,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
 
   .best-sellers { padding-top: 0; background: var(--mobile-order-bg); }
   .best-sellers .container { width: calc(100% - 36px); }
-  .mobile-menu-heading { display: block; margin: 0 -18px 6px; padding: 10px 18px; background: var(--mobile-heading-bg); }
+  .mobile-menu-heading { display: block; margin: 0 -18px 6px; padding: 10px 18px; background: var(--mobile-order-bg); }
   .mobile-menu-heading span { display: block; margin-bottom: 4px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .16em; }
   .mobile-menu-heading h2 { margin: 0; font-size: 26px; line-height: 1; letter-spacing: -.035em; }
   .center-heading { display: none; }
@@ -281,7 +284,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .options-button span { margin-right: 4px; font-size: 14px; }
   .product-quick-actions { grid-column: 1; grid-row: 5; display: flex; gap: 6px; margin-top: 6px; }
   .product-quick-actions button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; color: var(--dark); background: transparent; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; font-size: 20px; }
-  .options-button:focus-visible, .options-button:active, .product-quick-actions button:focus-visible, .product-quick-actions button:active, .product-quick-actions button.is-active { outline: none; background: rgba(255,212,59,.22); border-color: var(--mobile-accent); }
+  .options-button:focus-visible, .options-button:active, .product-quick-actions button:focus-visible, .product-quick-actions button:active, .product-quick-actions button.is-active { outline: none; background: rgba(242,201,76,.22); border-color: var(--mobile-accent); }
   .product-footer { display: contents; }
   .product-footer > strong { grid-column: 1; grid-row: 2; align-self: start; justify-self: start; width: max-content; margin: 0; padding: 0; color: var(--mobile-accent); background: none; border: 0; font-size: 19px; line-height: 1.2; }
   .product-footer .add-button { display: none; }
