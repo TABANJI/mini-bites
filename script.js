@@ -3,35 +3,20 @@ document.documentElement.classList.add('js');
 const vegetableOption = { id: 'add-vegetables', name: 'Add vegetables', price: 30000, priceLabel: '30,000 LL' };
 
 const menuCategories = {
-  mana2eesh: { label: 'Mana2eesh', filters: [{ id: 'all', label: 'All' }, { id: 'zaatar', label: 'Zaatar' }, { id: 'cheese', label: 'Cheese' }, { id: 'meat', label: 'Meat' }, { id: 'other', label: 'Other' }] },
-  'italian-pizza': { label: 'Italian Pizza', filters: [{ id: 'all', label: 'All' }, { id: 'meat', label: 'Meat' }, { id: 'vegetarian', label: 'Vegetarian' }] },
-  'burger-sandwich': { label: 'Burger / Sandwich', filters: [{ id: 'all', label: 'All' }, { id: 'burger', label: 'Burger' }, { id: 'sandwich', label: 'Sandwiches' }] },
-  mu3ajaneit: { label: 'Mu3ajaneit', filters: [{ id: 'all', label: 'All' }] },
-  desserts: { label: 'Desserts', filters: [{ id: 'all', label: 'All' }] }
+  mana2eesh: { label: 'Mana2eesh' },
+  'italian-pizza': { label: 'Italian Pizza' },
+  'burger-sandwich': { label: 'Burger / Sandwich' },
+  mu3ajaneit: { label: 'Mu3ajaneit' },
+  desserts: { label: 'Desserts' }
 };
 
-const mobileMainSections = {
-  'mini-bites': {
-    heading: 'Mana2eesh',
-    category: 'mana2eesh',
-    groups: [
-      { id: 'zaatar', label: 'Zaatar' },
-      { id: 'cheese', label: 'Cheese' },
-      { id: 'meat', label: 'Meat' },
-      { id: 'other', label: 'Other' }
-    ]
-  },
-  'sandwiches-burgers': {
-    heading: 'Sandwiches & Burgers',
-    category: 'burger-sandwich',
-    groups: [
-      { id: 'burger', label: 'Burgers' },
-      { id: 'sandwich', label: 'Sandwiches' }
-    ]
-  },
-  drinks: { heading: 'Drinks', category: null, groups: [] },
-  'gift-certificates': { heading: 'Gift Certificates', category: null, groups: [] }
-};
+const mobileMenuSections = [
+  { id: 'mana2eesh', label: 'MANA2EESH' },
+  { id: 'italian-pizza', label: 'ITALIAN PIZZA' },
+  { id: 'mu3ajaneit', label: 'MU3AJANEIT' },
+  { id: 'burger-sandwich', label: 'BURGER / SANDWICH' },
+  { id: 'desserts', label: 'DESSERTS' }
+];
 
 const menuItems = [
   { id: 'mana-zaatar', name: 'Zaatar', category: 'mana2eesh', price: 70000, priceLabel: '70,000 LL', description: '', image: null, options: [vegetableOption], popular: true, filters: ['zaatar'] },
@@ -76,7 +61,7 @@ const favoritesButton = quickViewButtons[1];
 const favorites = new Set();
 let activeMainSection = 'mini-bites';
 let activeCategory = 'mana2eesh';
-let activeFilter = 'all';
+let activeFilter = 'mana2eesh';
 let quickView = 'all';
 let scrollSpyObserver = null;
 let scrollSpyPausedUntil = 0;
@@ -94,7 +79,7 @@ const productCardTemplate = (item) => {
   </article>`;
 };
 
-const itemsForCurrentView = () => menuItems.filter((item) => item.category === activeCategory && (quickView !== 'popular' || item.popular) && (quickView !== 'favorites' || favorites.has(item.id)));
+const itemsForCategory = (category) => menuItems.filter((item) => item.category === category && (quickView !== 'popular' || item.popular) && (quickView !== 'favorites' || favorites.has(item.id)));
 
 const setActiveSubcategory = (filterId, center = true) => {
   activeFilter = filterId;
@@ -123,38 +108,36 @@ const startScrollSpy = () => {
 };
 
 const renderProducts = () => {
-  const items = itemsForCurrentView();
-  const groups = mobileMainSections[activeMainSection]?.groups || [];
-
-  if (!activeCategory || !items.length) {
+  if (window.innerWidth <= 768 && (activeMainSection === 'drinks' || activeMainSection === 'gift-certificates')) {
     productGrid.innerHTML = '<p class="menu-empty">No items in this section yet.</p>';
     startScrollSpy();
     return;
   }
 
-  if (window.innerWidth > 768 || !groups.length) {
+  if (window.innerWidth > 768) {
+    const items = itemsForCategory(activeCategory);
     productGrid.innerHTML = items.map(productCardTemplate).join('');
     startScrollSpy();
     return;
   }
 
-  productGrid.innerHTML = groups.map((group) => {
-    const groupItems = items.filter((item) => item.filters[0] === group.id);
-    return groupItems.length ? `<section class="product-group" id="menu-group-${group.id}" data-filter="${group.id}">${groupItems.map(productCardTemplate).join('')}</section>` : '';
+  productGrid.innerHTML = mobileMenuSections.map((section, index) => {
+    const sectionItems = itemsForCategory(section.id);
+    if (!sectionItems.length) return '';
+    const heading = index === 0 ? '' : `<div class="mobile-menu-heading"><span>MINI BITES</span><h2>${section.label}</h2></div>`;
+    return `<section class="product-group" id="${section.id}" data-filter="${section.id}">${heading}${sectionItems.map(productCardTemplate).join('')}</section>`;
   }).join('');
   startScrollSpy();
 };
 
 const renderSubcategories = () => {
-  const groups = mobileMainSections[activeMainSection]?.groups || [];
-  const filters = [{ id: 'all', label: 'All' }, ...groups];
-  subcategoryRow.innerHTML = filters.map((filter) => `<button class="${filter.id === activeFilter ? 'active' : ''}" type="button" role="listitem" data-filter="${filter.id}">${filter.label}</button>`).join('');
+  subcategoryRow.innerHTML = mobileMenuSections.map((section) => `<button class="${section.id === activeFilter ? 'active' : ''}" type="button" role="listitem" data-filter="${section.id}">${section.label}</button>`).join('');
 };
 
 const updateFavoritesCount = () => { favoritesButton.lastChild.textContent = ` Favorites: ${favorites.size}`; };
 const setQuickView = (view) => {
   quickView = view;
-  activeFilter = 'all';
+  activeFilter = 'mana2eesh';
   quickViewButtons.forEach((button, index) => button.classList.toggle('active', (view === 'popular' && index === 0) || (view === 'favorites' && index === 1)));
   renderSubcategories();
   renderProducts();
@@ -211,31 +194,29 @@ categoryRow.addEventListener('click', (event) => {
   const button = event.target.closest('button[data-main-section]');
   if (!button) return;
   const nextMainSection = button.dataset.mainSection;
-  const section = mobileMainSections[nextMainSection];
-  if (!section) return;
   activeMainSection = nextMainSection;
-  activeCategory = section.category;
-  activeFilter = 'all';
+  activeCategory = nextMainSection === 'sandwiches-burgers' ? 'burger-sandwich' : 'mana2eesh';
+  activeFilter = nextMainSection === 'sandwiches-burgers' ? 'burger-sandwich' : 'mana2eesh';
   quickView = 'all';
-  categoryHeading.textContent = section.heading.toUpperCase();
+  categoryHeading.textContent = nextMainSection === 'drinks' || nextMainSection === 'gift-certificates' ? nextMainSection.replace('-', ' ').toUpperCase() : 'MANA2EESH';
   categoryRow.querySelector('.active')?.classList.remove('active');
   button.classList.add('active');
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
+  scrollSpyPausedUntil = Date.now() + 700;
   renderSubcategories();
   renderProducts();
   button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  document.getElementById('best-sellers').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const target = nextMainSection === 'sandwiches-burgers' ? document.getElementById('burger-sandwich') : document.getElementById('best-sellers');
+  target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
 desktopCategoryGrid.addEventListener('click', (event) => {
   const categoryLink = event.target.closest('[data-category]');
   if (!categoryLink) return;
   activeCategory = categoryLink.dataset.category;
-  activeFilter = 'all';
+  activeFilter = activeCategory;
   quickView = 'all';
   categoryHeading.textContent = menuCategories[activeCategory].label.toUpperCase();
-  categoryRow.querySelector('.active')?.classList.remove('active');
-  categoryRow.querySelector(`[data-category="${activeCategory}"]`)?.classList.add('active');
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
   renderSubcategories();
   renderProducts();
@@ -251,7 +232,14 @@ subcategoryRow.addEventListener('click', (event) => {
   scrollSpyPausedUntil = Date.now() + 700;
   setActiveSubcategory(filterId);
   if (wasQuickView) renderProducts();
-  const target = filterId === 'all' ? document.getElementById('best-sellers') : document.getElementById(`menu-group-${filterId}`);
+  if (activeMainSection !== 'mini-bites' && activeMainSection !== 'sandwiches-burgers') {
+    activeMainSection = 'mini-bites';
+    categoryHeading.textContent = 'MANA2EESH';
+    categoryRow.querySelector('.active')?.classList.remove('active');
+    categoryRow.querySelector('[data-main-section="mini-bites"]')?.classList.add('active');
+    renderProducts();
+  }
+  const target = document.getElementById(filterId);
   target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
