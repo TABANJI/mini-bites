@@ -10,6 +10,29 @@ const menuCategories = {
   desserts: { label: 'Desserts', filters: [{ id: 'all', label: 'All' }] }
 };
 
+const mobileMainSections = {
+  'mini-bites': {
+    heading: 'Mana2eesh',
+    category: 'mana2eesh',
+    groups: [
+      { id: 'zaatar', label: 'Zaatar' },
+      { id: 'cheese', label: 'Cheese' },
+      { id: 'meat', label: 'Meat' },
+      { id: 'other', label: 'Other' }
+    ]
+  },
+  'sandwiches-burgers': {
+    heading: 'Sandwiches & Burgers',
+    category: 'burger-sandwich',
+    groups: [
+      { id: 'burger', label: 'Burgers' },
+      { id: 'sandwich', label: 'Sandwiches' }
+    ]
+  },
+  drinks: { heading: 'Drinks', category: null, groups: [] },
+  'gift-certificates': { heading: 'Gift Certificates', category: null, groups: [] }
+};
+
 const menuItems = [
   { id: 'mana-zaatar', name: 'Zaatar', category: 'mana2eesh', price: 70000, priceLabel: '70,000 LL', description: '', image: null, options: [vegetableOption], popular: true, filters: ['zaatar'] },
   { id: 'mana-cheese', name: 'Cheese', category: 'mana2eesh', price: 180000, priceLabel: '180,000 LL', description: '', image: null, options: [vegetableOption], popular: false, filters: ['cheese'] },
@@ -51,9 +74,12 @@ const desktopCategoryGrid = document.querySelector('.category-grid');
 const quickViewButtons = document.querySelectorAll('.mobile-action-row button');
 const favoritesButton = quickViewButtons[1];
 const favorites = new Set();
+let activeMainSection = 'mini-bites';
 let activeCategory = 'mana2eesh';
 let activeFilter = 'all';
 let quickView = 'all';
+let scrollSpyObserver = null;
+let scrollSpyPausedUntil = 0;
 
 const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
@@ -68,21 +94,69 @@ const productCardTemplate = (item) => {
   </article>`;
 };
 
-const visibleItems = () => menuItems.filter((item) => item.category === activeCategory && (activeFilter === 'all' || item.filters.includes(activeFilter)) && (quickView !== 'popular' || item.popular) && (quickView !== 'favorites' || favorites.has(item.id)));
+const itemsForCurrentView = () => menuItems.filter((item) => item.category === activeCategory && (quickView !== 'popular' || item.popular) && (quickView !== 'favorites' || favorites.has(item.id)));
+
+const setActiveSubcategory = (filterId, center = true) => {
+  activeFilter = filterId;
+  const activeButton = subcategoryRow.querySelector(`[data-filter="${filterId}"]`);
+  subcategoryRow.querySelector('.active')?.classList.remove('active');
+  activeButton?.classList.add('active');
+  if (center) activeButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+};
+
+const startScrollSpy = () => {
+  scrollSpyObserver?.disconnect();
+  if (window.innerWidth > 768 || !('IntersectionObserver' in window)) return;
+  const groups = [...productGrid.querySelectorAll('.product-group[data-filter]')];
+  if (!groups.length) return;
+
+  scrollSpyObserver = new IntersectionObserver((entries) => {
+    if (Date.now() < scrollSpyPausedUntil) return;
+    const visible = entries.filter((entry) => entry.isIntersecting);
+    if (!visible.length) return;
+    visible.sort((a, b) => Math.abs(a.boundingClientRect.top - 226) - Math.abs(b.boundingClientRect.top - 226));
+    const nextFilter = visible[0].target.dataset.filter;
+    if (nextFilter !== activeFilter) setActiveSubcategory(nextFilter);
+  }, { rootMargin: '-226px 0px -58% 0px', threshold: 0 });
+
+  groups.forEach((group) => scrollSpyObserver.observe(group));
+};
 
 const renderProducts = () => {
-  const items = visibleItems();
-  productGrid.innerHTML = items.length ? items.map(productCardTemplate).join('') : '<p class="menu-empty">No items in this view yet.</p>';
+  const items = itemsForCurrentView();
+  const groups = mobileMainSections[activeMainSection]?.groups || [];
+
+  if (!activeCategory || !items.length) {
+    productGrid.innerHTML = '<p class="menu-empty">No items in this section yet.</p>';
+    startScrollSpy();
+    return;
+  }
+
+  if (window.innerWidth > 768 || !groups.length) {
+    productGrid.innerHTML = items.map(productCardTemplate).join('');
+    startScrollSpy();
+    return;
+  }
+
+  productGrid.innerHTML = groups.map((group) => {
+    const groupItems = items.filter((item) => item.filters[0] === group.id);
+    return groupItems.length ? `<section class="product-group" id="menu-group-${group.id}" data-filter="${group.id}">${groupItems.map(productCardTemplate).join('')}</section>` : '';
+  }).join('');
+  startScrollSpy();
 };
 
 const renderSubcategories = () => {
-  subcategoryRow.innerHTML = menuCategories[activeCategory].filters.map((filter) => `<button class="${filter.id === activeFilter ? 'active' : ''}" type="button" role="listitem" data-filter="${filter.id}">${filter.label}</button>`).join('');
+  const groups = mobileMainSections[activeMainSection]?.groups || [];
+  const filters = [{ id: 'all', label: 'All' }, ...groups];
+  subcategoryRow.innerHTML = filters.map((filter) => `<button class="${filter.id === activeFilter ? 'active' : ''}" type="button" role="listitem" data-filter="${filter.id}">${filter.label}</button>`).join('');
 };
 
 const updateFavoritesCount = () => { favoritesButton.lastChild.textContent = ` Favorites: ${favorites.size}`; };
 const setQuickView = (view) => {
   quickView = view;
+  activeFilter = 'all';
   quickViewButtons.forEach((button, index) => button.classList.toggle('active', (view === 'popular' && index === 0) || (view === 'favorites' && index === 1)));
+  renderSubcategories();
   renderProducts();
 };
 
@@ -134,12 +208,16 @@ productGrid.addEventListener('click', (event) => {
 });
 
 categoryRow.addEventListener('click', (event) => {
-  const button = event.target.closest('button[data-category]');
+  const button = event.target.closest('button[data-main-section]');
   if (!button) return;
-  activeCategory = button.dataset.category;
+  const nextMainSection = button.dataset.mainSection;
+  const section = mobileMainSections[nextMainSection];
+  if (!section) return;
+  activeMainSection = nextMainSection;
+  activeCategory = section.category;
   activeFilter = 'all';
   quickView = 'all';
-  categoryHeading.textContent = menuCategories[activeCategory].label.toUpperCase();
+  categoryHeading.textContent = section.heading.toUpperCase();
   categoryRow.querySelector('.active')?.classList.remove('active');
   button.classList.add('active');
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
@@ -166,14 +244,15 @@ desktopCategoryGrid.addEventListener('click', (event) => {
 subcategoryRow.addEventListener('click', (event) => {
   const button = event.target.closest('button[data-filter]');
   if (!button) return;
-  activeFilter = button.dataset.filter;
+  const filterId = button.dataset.filter;
+  const wasQuickView = quickView !== 'all';
   quickView = 'all';
-  subcategoryRow.querySelector('.active')?.classList.remove('active');
-  button.classList.add('active');
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
-  renderProducts();
-  button.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-  document.getElementById('best-sellers').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  scrollSpyPausedUntil = Date.now() + 700;
+  setActiveSubcategory(filterId);
+  if (wasQuickView) renderProducts();
+  const target = filterId === 'all' ? document.getElementById('best-sellers') : document.getElementById(`menu-group-${filterId}`);
+  target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
 quickViewButtons[0].addEventListener('click', () => setQuickView('popular'));
