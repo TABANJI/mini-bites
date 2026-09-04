@@ -69,8 +69,13 @@ let activeMainSection = 'mini-bites';
 let activeCategory = 'mana2eesh';
 let activeFilter = 'mana2eesh';
 let quickView = 'all';
-let scrollSpyObserver = null;
-let scrollSpyPausedUntil = 0;
+let scrollSpyGroups = [];
+let activeScrollGroupIndex = 0;
+let scrollSpyTicking = false;
+let lastScrollY = window.scrollY;
+let programmaticScrollTimer = null;
+const scrollActivationY = 226;
+const scrollHysteresis = 32;
 
 const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
@@ -87,50 +92,102 @@ const productCardTemplate = (item) => {
 
 const itemsForCategory = (category) => menuItems.filter((item) => item.category === category && (quickView !== 'popular' || item.popular) && (quickView !== 'favorites' || favorites.has(item.id)));
 
+const centerNavTab = (container, tab) => {
+  if (!tab) return;
+  const targetLeft = tab.offsetLeft - ((container.clientWidth - tab.offsetWidth) / 2);
+  const maxLeft = Math.max(0, container.scrollWidth - container.clientWidth);
+  container.scrollTo({ left: Math.min(maxLeft, Math.max(0, targetLeft)), behavior: 'smooth' });
+};
+
 const setActiveSubcategory = (filterId, center = true) => {
-  activeFilter = filterId;
   const activeButton = subcategoryRow.querySelector(`[data-filter="${filterId}"]`);
+  if (activeFilter === filterId && activeButton?.classList.contains('active')) return;
+  activeFilter = filterId;
   subcategoryRow.querySelector('.active')?.classList.remove('active');
   activeButton?.classList.add('active');
-  if (center) activeButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  if (center) centerNavTab(subcategoryRow, activeButton);
 };
 
 const setActiveMainSection = (sectionId, center = true) => {
-  activeMainSection = sectionId;
   const activeButton = categoryRow.querySelector(`[data-main-section="${sectionId}"]`);
+  const isAlreadyActive = activeMainSection === sectionId && activeButton?.classList.contains('active');
+  if (isAlreadyActive) return;
+  activeMainSection = sectionId;
   categoryRow.querySelector('.active')?.classList.remove('active');
   activeButton?.classList.add('active');
   if (sectionId !== 'mini-bites') subcategoryRow.querySelector('.active')?.classList.remove('active');
-  if (center) activeButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  if (center) centerNavTab(categoryRow, activeButton);
+};
+
+const applyScrollGroup = (group) => {
+  if (!group) return;
+  const nextMainSection = group.dataset.mainSection;
+  if (nextMainSection !== activeMainSection) setActiveMainSection(nextMainSection);
+  if (nextMainSection === 'mini-bites') {
+    const nextFilter = group.dataset.filter;
+    if (nextFilter && (nextFilter !== activeFilter || !subcategoryRow.querySelector('.active'))) setActiveSubcategory(nextFilter);
+  }
+};
+
+const findInitialScrollGroup = () => {
+  let index = 0;
+  scrollSpyGroups.forEach((group, groupIndex) => {
+    if (group.getBoundingClientRect().top <= scrollActivationY) index = groupIndex;
+  });
+  return index;
+};
+
+const updateScrollSpy = () => {
+  if (window.innerWidth > 768 || !scrollSpyGroups.length || programmaticScrollTimer) return;
+  const scrollingDown = window.scrollY >= lastScrollY;
+  if (scrollingDown) {
+    while (activeScrollGroupIndex < scrollSpyGroups.length - 1 && scrollSpyGroups[activeScrollGroupIndex + 1].getBoundingClientRect().top <= scrollActivationY - scrollHysteresis) {
+      activeScrollGroupIndex += 1;
+    }
+  } else {
+    while (activeScrollGroupIndex > 0 && scrollSpyGroups[activeScrollGroupIndex].getBoundingClientRect().top > scrollActivationY + scrollHysteresis) {
+      activeScrollGroupIndex -= 1;
+    }
+  }
+  lastScrollY = window.scrollY;
+  applyScrollGroup(scrollSpyGroups[activeScrollGroupIndex]);
+};
+
+const queueScrollSpy = () => {
+  if (scrollSpyTicking) return;
+  scrollSpyTicking = true;
+  window.requestAnimationFrame(() => {
+    updateScrollSpy();
+    scrollSpyTicking = false;
+  });
 };
 
 const startScrollSpy = () => {
-  scrollSpyObserver?.disconnect();
-  if (window.innerWidth > 768 || !('IntersectionObserver' in window)) return;
-  const groups = [...productGrid.querySelectorAll('.product-group[data-main-section]')];
-  if (!groups.length) return;
-  const visibility = new Map(groups.map((group) => [group, false]));
-
-  scrollSpyObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => visibility.set(entry.target, entry.isIntersecting));
-    if (Date.now() < scrollSpyPausedUntil) return;
-    const visible = groups.filter((group) => visibility.get(group));
-    if (!visible.length) return;
-    const probeY = 226;
-    const currentGroup = visible.find((group) => {
-      const rect = group.getBoundingClientRect();
-      return rect.top <= probeY && rect.bottom > probeY;
-    }) || visible.sort((a, b) => Math.abs(a.getBoundingClientRect().top - probeY) - Math.abs(b.getBoundingClientRect().top - probeY))[0];
-    const nextMainSection = currentGroup.dataset.mainSection;
-    if (nextMainSection !== activeMainSection) setActiveMainSection(nextMainSection);
-    if (nextMainSection === 'mini-bites') {
-      const nextFilter = currentGroup.dataset.filter;
-      if (nextFilter && (nextFilter !== activeFilter || !subcategoryRow.querySelector('.active'))) setActiveSubcategory(nextFilter);
-    }
-  }, { rootMargin: '-226px 0px -58% 0px', threshold: 0 });
-
-  groups.forEach((group) => scrollSpyObserver.observe(group));
+  if (window.innerWidth > 768) {
+    scrollSpyGroups = [];
+    return;
+  }
+  scrollSpyGroups = [...productGrid.querySelectorAll('.product-group[data-main-section]')];
+  if (!scrollSpyGroups.length) return;
+  activeScrollGroupIndex = findInitialScrollGroup();
+  lastScrollY = window.scrollY;
+  applyScrollGroup(scrollSpyGroups[activeScrollGroupIndex]);
 };
+
+const scrollToMenuSection = (target) => {
+  if (!target) return;
+  window.clearTimeout(programmaticScrollTimer);
+  programmaticScrollTimer = window.setTimeout(() => {
+    programmaticScrollTimer = null;
+    activeScrollGroupIndex = findInitialScrollGroup();
+    lastScrollY = window.scrollY;
+    applyScrollGroup(scrollSpyGroups[activeScrollGroupIndex]);
+  }, 900);
+  const targetTop = window.scrollY + target.getBoundingClientRect().top - scrollActivationY;
+  window.scrollTo({ top: Math.max(0, targetTop), behavior: 'smooth' });
+};
+
+window.addEventListener('scroll', queueScrollSpy, { passive: true });
 
 const renderProducts = () => {
   if (window.innerWidth > 768) {
@@ -223,13 +280,12 @@ categoryRow.addEventListener('click', (event) => {
   const wasQuickView = quickView !== 'all';
   quickView = 'all';
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
-  scrollSpyPausedUntil = Date.now() + 700;
   if (wasQuickView) renderProducts();
   setActiveMainSection(nextMainSection);
   if (nextMainSection === 'mini-bites') setActiveSubcategory('mana2eesh');
   const targetId = mobileMainSections.find((section) => section.id === nextMainSection)?.targetId;
   const target = document.getElementById(targetId);
-  target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  scrollToMenuSection(target);
 });
 
 desktopCategoryGrid.addEventListener('click', (event) => {
@@ -251,14 +307,13 @@ subcategoryRow.addEventListener('click', (event) => {
   const wasQuickView = quickView !== 'all';
   quickView = 'all';
   quickViewButtons.forEach((quickButton) => quickButton.classList.remove('active'));
-  scrollSpyPausedUntil = Date.now() + 700;
   setActiveSubcategory(filterId);
   if (wasQuickView) renderProducts();
   if (activeMainSection !== 'mini-bites') {
     setActiveMainSection('mini-bites');
   }
   const target = document.getElementById(filterId);
-  target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  scrollToMenuSection(target);
 });
 
 quickViewButtons[0].addEventListener('click', () => setQuickView('popular'));
