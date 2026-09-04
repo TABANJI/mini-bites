@@ -84,6 +84,14 @@ window.addEventListener('resize', () => {
   if (window.innerWidth > 768) closeMenu();
 });
 
+document.querySelector('.back-button').addEventListener('click', () => {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
 document.querySelectorAll('.mobile-category-row, .mobile-subcategory-row').forEach((row) => {
   row.querySelectorAll('button').forEach((button) => {
     button.addEventListener('click', () => {

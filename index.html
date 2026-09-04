@@ -13,9 +13,11 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
+      <button class="back-button" type="button" aria-label="Go back"><span aria-hidden="true">←</span></button>
       <a class="brand" href="#home" aria-label="MINI BITES home">
         <span class="brand-mark">MB</span>
-        <span>MINI <strong>BITES</strong></span>
+        <span class="brand-name">MINI <strong>BITES</strong></span>
+        <span class="mobile-delivery">Delivery</span>
       </a>
       <nav class="main-nav" id="mobile-navigation" aria-label="Primary navigation">
         <a class="active" href="#home">Home</a>
@@ -37,6 +39,10 @@
   </header>
 
   <nav class="mobile-catalog-nav" aria-label="Menu categories">
+    <div class="mobile-action-row" aria-label="Quick menu filters">
+      <button class="active" type="button"><span aria-hidden="true">★</span> Popular</button>
+      <button type="button"><span aria-hidden="true">♥</span> Favorites: 0</button>
+    </div>
     <div class="mobile-category-row" role="list">
       <button class="active" type="button" role="listitem">Mana2eesh</button>
       <button type="button" role="listitem">Pizza</button>
@@ -46,8 +52,8 @@
     </div>
     <div class="mobile-subcategory-row" role="list">
       <button class="active" type="button" role="listitem">Popular</button>
-      <button type="button" role="listitem">Cheese</button>
       <button type="button" role="listitem">Zaatar</button>
+      <button type="button" role="listitem">Cheese</button>
       <button type="button" role="listitem">Meat</button>
       <button type="button" role="listitem">Chicken</button>
       <button type="button" role="listitem">Specials</button>
