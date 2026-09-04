@@ -260,7 +260,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
 
   .best-sellers { padding-top: 0; background: var(--mobile-order-bg); }
   .best-sellers .container { width: calc(100% - 36px); }
-  .mobile-menu-heading { display: block; margin: 0 -18px 6px; padding: 10px 18px; background: var(--mobile-order-bg); }
+  .mobile-menu-heading { display: block; margin: 0 -18px 2px; padding: 10px 18px; background: var(--mobile-order-bg); }
   .mobile-menu-heading span { display: block; margin-bottom: 4px; color: var(--mobile-muted); font-size: 10px; font-weight: 800; letter-spacing: .18em; }
   .mobile-menu-heading h2 { margin: 0; font-size: 26px; line-height: 1; letter-spacing: -.035em; }
   .center-heading { display: none; }
@@ -268,8 +268,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .center-heading h2 { font-size: 32px; }
   .center-heading p { margin: 10px 0 0; font-size: 13px; line-height: 1.5; }
   .product-grid { display: block; background: var(--mobile-order-bg); }
-  .product-card { display: grid; grid-template-columns: minmax(0, 56fr) minmax(132px, 44fr); grid-template-rows: auto auto auto auto auto; gap: 0 14px; min-width: 0; padding: 17px 0; overflow: visible; background: transparent; border-bottom: 1px solid var(--mobile-border); border-radius: 0; box-shadow: none; }
-  .product-card:first-child { padding-top: 17px; }
+  .product-card { display: grid; grid-template-columns: minmax(0, 56fr) minmax(132px, 44fr); grid-template-rows: auto auto auto auto auto; gap: 0 14px; min-width: 0; padding: 14px 0; overflow: visible; background: transparent; border-bottom: 1px solid var(--mobile-border); border-radius: 0; box-shadow: none; }
   .product-card:last-child { border-bottom: 0; }
   .product-card:hover { transform: none; box-shadow: none; }
   .product-media { grid-column: 2; grid-row: 1 / 6; display: flex; width: 100%; flex-direction: column; align-self: start; gap: 7px; }
@@ -277,10 +276,10 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .product-image::after { display: none; }
   .product-image mark { left: 7px; top: 7px; padding: 5px 7px; color: var(--dark); background: var(--mobile-accent); font-size: 8px; }
   .product-body { display: contents; }
-  .product-body h3 { display: -webkit-box; grid-column: 1; grid-row: 1; min-height: 46px; margin: 0 0 3px; overflow: hidden; color: var(--mobile-text); font-size: 20px; font-weight: 800; line-height: 1.15; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-  .product-body p { display: -webkit-box; grid-column: 1; grid-row: 3; height: 68px; margin: 6px 0 0; overflow: hidden; color: var(--mobile-muted); font-size: 12px; line-height: 1.42; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
+  .product-body h3 { display: -webkit-box; grid-column: 1; grid-row: 1; margin: 0 0 6px; overflow: hidden; color: var(--mobile-text); font-size: 20px; font-weight: 800; line-height: 1.15; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+  .product-body p { display: -webkit-box; grid-column: 1; grid-row: 3; margin: 12px 0 0; overflow: hidden; color: var(--mobile-muted); font-size: 12px; line-height: 1.42; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
   .product-options { display: contents; }
-  .options-button { grid-column: 1; grid-row: 4; justify-self: start; height: 44px; margin-top: 7px; padding: 0 11px; color: var(--mobile-text); background: transparent; border: 1px solid var(--mobile-border); border-radius: 8px; font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; }
+  .options-button { grid-column: 1; grid-row: 4; justify-self: start; height: 44px; margin-top: 6px; padding: 0 11px; color: var(--mobile-text); background: transparent; border: 1px solid var(--mobile-border); border-radius: 8px; font-family: "DM Sans", sans-serif; font-size: 11px; font-weight: 700; cursor: pointer; }
   .options-button span { margin-right: 4px; font-size: 14px; }
   .product-quick-actions { grid-column: 1; grid-row: 5; display: flex; gap: 6px; margin-top: 6px; }
   .product-quick-actions button { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; color: var(--mobile-text); background: transparent; border: 1px solid var(--mobile-border); border-radius: 8px; cursor: pointer; font-size: 20px; }
