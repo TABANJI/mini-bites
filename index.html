@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260904-mobile-density-final">
+  <link rel="stylesheet" href="./style.css?v=20260904-real-menu">
 </head>
 <body>
   <header class="site-header">
@@ -44,20 +44,13 @@
       <button type="button"><span aria-hidden="true">♥</span> Favorites: 0</button>
     </div>
     <div class="mobile-category-row" role="list">
-      <button class="active" type="button" role="listitem">Mana2eesh</button>
-      <button type="button" role="listitem">Pizza</button>
-      <button type="button" role="listitem">Burgers</button>
-      <button type="button" role="listitem">Sandwiches</button>
-      <button type="button" role="listitem">Desserts</button>
+      <button class="active" type="button" role="listitem" data-category="mana2eesh">Mana2eesh</button>
+      <button type="button" role="listitem" data-category="italian-pizza">Italian Pizza</button>
+      <button type="button" role="listitem" data-category="burger-sandwich">Burger / Sandwich</button>
+      <button type="button" role="listitem" data-category="mu3ajaneit">Mu3ajaneit</button>
+      <button type="button" role="listitem" data-category="desserts">Desserts</button>
     </div>
-    <div class="mobile-subcategory-row" role="list">
-      <button class="active" type="button" role="listitem">Popular</button>
-      <button type="button" role="listitem">Zaatar</button>
-      <button type="button" role="listitem">Cheese</button>
-      <button type="button" role="listitem">Meat</button>
-      <button type="button" role="listitem">Chicken</button>
-      <button type="button" role="listitem">Specials</button>
-    </div>
+    <div class="mobile-subcategory-row" role="list" aria-label="Menu filters"></div>
   </nav>
 
   <main>
@@ -103,23 +96,23 @@
         </div>
 
         <div class="category-grid">
-          <a class="category-card reveal" href="#best-sellers">
+          <a class="category-card reveal" href="#best-sellers" data-category="mana2eesh">
             <div class="category-image image-placeholder"><span>FOOD PHOTO</span><b>01</b></div>
             <div class="category-title"><span>Mana2eesh</span><i>↗</i></div>
           </a>
-          <a class="category-card reveal" href="#best-sellers">
+          <a class="category-card reveal" href="#best-sellers" data-category="italian-pizza">
             <div class="category-image image-placeholder"><span>FOOD PHOTO</span><b>02</b></div>
             <div class="category-title"><span>Italian Pizza</span><i>↗</i></div>
           </a>
-          <a class="category-card reveal" href="#best-sellers">
+          <a class="category-card reveal" href="#best-sellers" data-category="burger-sandwich">
             <div class="category-image image-placeholder"><span>FOOD PHOTO</span><b>03</b></div>
-            <div class="category-title"><span>Burgers</span><i>↗</i></div>
+            <div class="category-title"><span>Burger / Sandwich</span><i>↗</i></div>
           </a>
-          <a class="category-card reveal" href="#best-sellers">
+          <a class="category-card reveal" href="#best-sellers" data-category="mu3ajaneit">
             <div class="category-image image-placeholder"><span>FOOD PHOTO</span><b>04</b></div>
-            <div class="category-title"><span>Sandwiches</span><i>↗</i></div>
+            <div class="category-title"><span>Mu3ajaneit</span><i>↗</i></div>
           </a>
-          <a class="category-card reveal" href="#best-sellers">
+          <a class="category-card reveal" href="#best-sellers" data-category="desserts">
             <div class="category-image image-placeholder"><span>FOOD PHOTO</span><b>05</b></div>
             <div class="category-title"><span>Desserts</span><i>↗</i></div>
           </a>
@@ -139,80 +132,7 @@
           <p>The favorites our regulars come back for, prepared fresh and served without the wait.</p>
         </div>
 
-        <div class="product-grid">
-          <article class="product-card reveal">
-            <div class="product-media">
-              <div class="product-image image-placeholder"><span>PRODUCT PHOTO</span><mark>Best seller</mark></div>
-              <button type="button" class="add-button mobile-add-button">+ ADD</button>
-            </div>
-            <div class="product-body">
-              <h3>Zaatar &amp; Cheese</h3>
-              <p>A warm, crisp mana2eesh layered with aromatic zaatar and melted cheese.</p>
-              <div class="product-options">
-                <button class="options-button" type="button"><span aria-hidden="true">↓</span> Show options</button>
-                <div class="product-quick-actions">
-                  <button type="button" aria-label="Add Zaatar and Cheese to favorites">♡</button>
-                  <button type="button" aria-label="Share Zaatar and Cheese">↗</button>
-                </div>
-              </div>
-              <div class="product-footer"><strong>$4.50</strong><button type="button" class="add-button">Add to order <span>+</span></button></div>
-            </div>
-          </article>
-          <article class="product-card reveal">
-            <div class="product-media">
-              <div class="product-image image-placeholder"><span>PRODUCT PHOTO</span></div>
-              <button type="button" class="add-button mobile-add-button">+ ADD</button>
-            </div>
-            <div class="product-body">
-              <h3>Pepperoni Pizza</h3>
-              <p>Italian-style crust, rich tomato sauce, mozzarella and crisp pepperoni.</p>
-              <div class="product-options">
-                <button class="options-button" type="button"><span aria-hidden="true">↓</span> Show options</button>
-                <div class="product-quick-actions">
-                  <button type="button" aria-label="Add Pepperoni Pizza to favorites">♡</button>
-                  <button type="button" aria-label="Share Pepperoni Pizza">↗</button>
-                </div>
-              </div>
-              <div class="product-footer"><strong>$9.00</strong><button type="button" class="add-button">Add to order <span>+</span></button></div>
-            </div>
-          </article>
-          <article class="product-card reveal">
-            <div class="product-media">
-              <div class="product-image image-placeholder"><span>PRODUCT PHOTO</span></div>
-              <button type="button" class="add-button mobile-add-button">+ ADD</button>
-            </div>
-            <div class="product-body">
-              <h3>Chicken Sandwich</h3>
-              <p>Juicy seasoned chicken, crisp vegetables and our signature house sauce.</p>
-              <div class="product-options">
-                <button class="options-button" type="button"><span aria-hidden="true">↓</span> Show options</button>
-                <div class="product-quick-actions">
-                  <button type="button" aria-label="Add Chicken Sandwich to favorites">♡</button>
-                  <button type="button" aria-label="Share Chicken Sandwich">↗</button>
-                </div>
-              </div>
-              <div class="product-footer"><strong>$6.50</strong><button type="button" class="add-button">Add to order <span>+</span></button></div>
-            </div>
-          </article>
-          <article class="product-card reveal">
-            <div class="product-media">
-              <div class="product-image image-placeholder"><span>PRODUCT PHOTO</span><mark>Popular</mark></div>
-              <button type="button" class="add-button mobile-add-button">+ ADD</button>
-            </div>
-            <div class="product-body">
-              <h3>Classic Burger</h3>
-              <p>A flame-grilled patty with cheddar, fresh toppings and a toasted bun.</p>
-              <div class="product-options">
-                <button class="options-button" type="button"><span aria-hidden="true">↓</span> Show options</button>
-                <div class="product-quick-actions">
-                  <button type="button" aria-label="Add Classic Burger to favorites">♡</button>
-                  <button type="button" aria-label="Share Classic Burger">↗</button>
-                </div>
-              </div>
-              <div class="product-footer"><strong>$7.50</strong><button type="button" class="add-button">Add to order <span>+</span></button></div>
-            </div>
-          </article>
-        </div>
+        <div class="product-grid" aria-live="polite"></div>
       </div>
     </section>
 
@@ -286,6 +206,6 @@
     <div class="container footer-bottom"><span>© <span id="year"></span> MINI BITES. All rights reserved.</span><span>Fresh bites, made right.</span></div>
   </footer>
 
-  <script src="./script.js"></script>
+  <script src="./script.js?v=20260904-real-menu"></script>
 </body>
 </html>

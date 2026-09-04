@@ -268,7 +268,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .center-heading h2 { font-size: 32px; }
   .center-heading p { margin: 10px 0 0; font-size: 13px; line-height: 1.5; }
   .product-grid { display: block; background: var(--mobile-order-bg); }
-  .product-card { display: grid; grid-template-columns: minmax(0, 56fr) minmax(132px, 44fr); grid-template-rows: auto auto auto auto auto; gap: 0 14px; min-width: 0; padding: 14px 0; overflow: visible; background: transparent; border-bottom: 1px solid var(--mobile-border); border-radius: 0; box-shadow: none; }
+  .product-card { display: grid; grid-template-columns: minmax(0, 56fr) minmax(132px, 44fr); grid-template-rows: auto auto auto auto auto; align-content: start; gap: 0 14px; min-width: 0; padding: 14px 0; overflow: visible; background: transparent; border-bottom: 1px solid var(--mobile-border); border-radius: 0; box-shadow: none; }
   .product-card:last-child { border-bottom: 0; }
   .product-card:hover { transform: none; box-shadow: none; }
   .product-media { grid-column: 2; grid-row: 1 / 6; display: flex; width: 100%; flex-direction: column; align-self: start; gap: 7px; }
