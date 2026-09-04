@@ -195,7 +195,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .brand-mark { width: 30px; height: 30px; font-size: 10px; }
   .site-header .brand { width: auto; gap: 0; overflow: visible; }
   .site-header .brand-mark { display: none; }
-  .brand-name { white-space: nowrap; }
+  .site-header .brand-name { color: var(--dark); font-size: 20px; font-weight: 800; line-height: 1; letter-spacing: -.4px; white-space: nowrap; }
   .header-cta { display: none; }
   .mobile-header-actions { display: flex; align-items: center; gap: 4px; }
   .search-button { position: relative; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; color: var(--dark); background: transparent; border: 0; border-radius: 0; cursor: pointer; }
