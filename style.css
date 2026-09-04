@@ -174,7 +174,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
 }
 
 @media (max-width: 768px) {
-  html { scroll-padding-top: 244px; }
+  html { scroll-padding-top: 238px; }
   body { min-width: 0; overflow-x: hidden; }
   body.menu-open { overflow: hidden; }
   .container { width: calc(100% - 48px); }
@@ -217,16 +217,16 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .mobile-action-row button.active span { color: var(--red); }
   .mobile-category-row, .mobile-subcategory-row { display: flex; width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; scroll-behavior: smooth; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .mobile-category-row::-webkit-scrollbar, .mobile-subcategory-row::-webkit-scrollbar { display: none; }
-  .mobile-category-row { height: 52px; align-items: stretch; gap: 26px; padding: 0 16px; border-bottom: 1px solid var(--line); }
-  .mobile-subcategory-row { height: 52px; align-items: center; gap: 22px; padding: 0 16px; border-top: 0; }
-  .mobile-category-row button, .mobile-subcategory-row button { flex: 0 0 auto; min-height: 0; padding: 0; color: var(--dark); background: transparent; border: 0; border-radius: 0; font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; }
-  .mobile-category-row button { position: relative; height: 52px; }
-  .mobile-category-row button.active { color: var(--dark); background: transparent; }
-  .mobile-category-row button.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--yellow); }
-  .mobile-subcategory-row button { min-height: 32px; padding: 0 10px; color: var(--muted); font-size: 12px; }
-  .mobile-subcategory-row button.active { color: var(--dark); background: rgba(255,212,59,.22); border-radius: 6px; }
+  .mobile-category-row { height: 50px; align-items: stretch; gap: 24px; padding: 0 16px; background: var(--white); border-bottom: 1px solid var(--line); }
+  .mobile-subcategory-row { height: 48px; align-items: center; gap: 18px; padding: 0 16px; background: var(--white); border-top: 0; }
+  .mobile-category-row button, .mobile-subcategory-row button { flex: 0 0 auto; min-height: 0; color: var(--dark); font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap; box-shadow: none; }
+  .mobile-category-row button { position: relative; height: 50px; padding: 0; color: var(--muted); background: transparent !important; border: 0 !important; border-radius: 0 !important; }
+  .mobile-category-row button.active { color: var(--yellow); }
+  .mobile-category-row button.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--yellow); }
+  .mobile-subcategory-row button { min-height: 30px; padding: 0 8px; color: var(--muted); background: transparent !important; border: 0 !important; border-radius: 0 !important; font-size: 12px; }
+  .mobile-subcategory-row button.active { color: var(--dark); background: rgba(255,212,59,.22) !important; border-radius: 5px !important; }
 
-  .hero { display: none; }
+  .hero { display: none !important; }
   .hero::before { font-size: 88px; }
   .hero-grid { grid-template-columns: 1fr; gap: 26px; padding-top: 38px; padding-bottom: 42px; }
   .hero-copy h1 { margin: 15px 0 17px; font-size: clamp(46px, 13vw, 64px); line-height: .92; }
@@ -252,8 +252,8 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .category-card:last-child .category-image { height: min(34vw, 210px); }
   .category-title { padding: 14px 5px 11px; font-size: 14px; }
 
-  .best-sellers { padding-top: 24px; }
-  .mobile-menu-heading { display: block; margin-bottom: 16px; }
+  .best-sellers { padding-top: 14px; }
+  .mobile-menu-heading { display: block; margin-bottom: 14px; }
   .mobile-menu-heading span { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .16em; }
   .mobile-menu-heading h2 { margin: 0; font-size: 26px; line-height: 1; letter-spacing: -.035em; }
   .center-heading { display: none; }
