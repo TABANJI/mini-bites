@@ -64,6 +64,10 @@ const subcategoryRow = document.querySelector('.mobile-subcategory-row');
 const desktopCategoryGrid = document.querySelector('.category-grid');
 const quickViewButtons = document.querySelectorAll('.mobile-action-row button');
 const favoritesButton = quickViewButtons[1];
+const desktopProductGrid = document.querySelector('.desktop-product-grid');
+const desktopMenuNav = document.querySelector('.desktop-menu-nav');
+const desktopSearchInput = document.querySelector('.desktop-search input');
+const desktopPopularButton = document.querySelector('.desktop-popular-button');
 const favorites = new Set();
 let activeMainSection = 'mini-bites';
 let activeCategory = 'mana2eesh';
@@ -76,6 +80,16 @@ let lastScrollY = window.scrollY;
 let programmaticScrollTimer = null;
 const scrollActivationY = 226;
 const scrollHysteresis = 32;
+let desktopSearchTerm = '';
+let desktopPopularOnly = false;
+let desktopScrollSections = [];
+let activeDesktopSection = 'desktop-mana2eesh';
+let desktopScrollIndex = 0;
+let desktopScrollTicking = false;
+let desktopLastScrollY = window.scrollY;
+let desktopProgrammaticTimer = null;
+const desktopActivationY = 100;
+const desktopHysteresis = 24;
 
 const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
@@ -87,6 +101,17 @@ const productCardTemplate = (item) => {
   return `<article class="product-card reveal is-visible" data-product-id="${escapeHtml(item.id)}">
     <div class="product-media"><div class="product-image image-placeholder"><span>PRODUCT PHOTO</span>${badge}</div><button type="button" class="add-button mobile-add-button">+ ADD</button></div>
     <div class="product-body"><h3>${escapeHtml(item.name)}</h3>${description}<div class="product-options">${options}<div class="product-quick-actions"><button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button><button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">↗</button></div></div><div class="product-footer"><strong>${escapeHtml(item.priceLabel)}</strong><button type="button" class="add-button">Add to order <span>+</span></button></div></div>
+  </article>`;
+};
+
+const desktopProductCardTemplate = (item) => {
+  const isFavorite = favorites.has(item.id);
+  const description = item.description ? `<p>${escapeHtml(item.description)}</p>` : '';
+  const badge = item.popular ? '<mark>Popular</mark>' : '';
+  const options = item.options.length ? `<button class="options-button" type="button"><span aria-hidden="true">↓</span> Show options</button>` : '';
+  return `<article class="desktop-product-card product-card" data-product-id="${escapeHtml(item.id)}">
+    <div class="desktop-product-body"><h3>${escapeHtml(item.name)}</h3><strong class="desktop-product-price">${escapeHtml(item.priceLabel)}</strong>${description}<div class="desktop-product-controls">${options}<button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button><button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">↗</button></div></div>
+    <div class="desktop-product-media"><div class="product-image image-placeholder"><span>PRODUCT PHOTO</span>${badge}</div><button type="button" class="add-button">+ ADD</button></div>
   </article>`;
 };
 
@@ -217,6 +242,103 @@ const renderSubcategories = () => {
   subcategoryRow.innerHTML = mobileMenuSections.map((section) => `<button class="${section.id === activeFilter ? 'active' : ''}" type="button" role="listitem" data-filter="${section.id}">${section.label}</button>`).join('');
 };
 
+const desktopSections = [
+  { id: 'desktop-mana2eesh', title: 'MANA2EESH', category: 'mana2eesh', main: 'mini-bites' },
+  { id: 'desktop-italian-pizza', title: 'ITALIAN PIZZA', category: 'italian-pizza', main: 'mini-bites' },
+  { id: 'desktop-mu3ajaneit', title: 'MU3AJANEIT', category: 'mu3ajaneit', main: 'mini-bites' },
+  { id: 'desktop-desserts', title: 'DESSERTS', category: 'desserts', main: 'mini-bites' },
+  { id: 'desktop-burger-sandwich', title: 'SANDWICHES & BURGERS', category: 'burger-sandwich', main: 'sandwiches-burgers' },
+  { id: 'desktop-drinks', title: 'DRINKS', category: null, main: 'drinks' },
+  { id: 'desktop-gift-certificates', title: 'GIFT CERTIFICATES', category: null, main: 'gift-certificates' }
+];
+
+const desktopItemsForSection = (section) => {
+  if (!section.category) return [];
+  return menuItems.filter((item) => item.category === section.category && (!desktopPopularOnly || item.popular) && (!desktopSearchTerm || item.name.toLowerCase().includes(desktopSearchTerm)));
+};
+
+const setActiveDesktopSection = (sectionId) => {
+  if (sectionId === activeDesktopSection && desktopMenuNav.querySelector(`[data-desktop-section="${sectionId}"].active`)) return;
+  activeDesktopSection = sectionId;
+  const section = desktopSections.find((item) => item.id === sectionId);
+  desktopMenuNav.querySelectorAll('.active').forEach((link) => link.classList.remove('active'));
+  if (section?.main === 'mini-bites') {
+    desktopMenuNav.querySelector('[data-desktop-target="mini-bites"]')?.classList.add('active');
+    desktopMenuNav.querySelector(`[data-desktop-section="${sectionId}"]`)?.classList.add('active');
+  } else {
+    desktopMenuNav.querySelector(`[data-desktop-section="${sectionId}"]`)?.classList.add('active');
+  }
+};
+
+const getDesktopActivationY = () => {
+  const distanceToBottom = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+  return Math.min(window.innerHeight - 24, desktopActivationY + Math.max(0, window.innerHeight - desktopActivationY - distanceToBottom));
+};
+
+const findDesktopScrollIndex = () => {
+  let index = 0;
+  const activationY = getDesktopActivationY();
+  desktopScrollSections.forEach((section, sectionIndex) => {
+    if (section.getBoundingClientRect().top <= activationY) index = sectionIndex;
+  });
+  return index;
+};
+
+const updateDesktopScrollSpy = () => {
+  if (window.innerWidth <= 768 || !desktopScrollSections.length || desktopProgrammaticTimer) return;
+  const scrollingDown = window.scrollY >= desktopLastScrollY;
+  const activationY = getDesktopActivationY();
+  if (scrollingDown) {
+    while (desktopScrollIndex < desktopScrollSections.length - 1 && desktopScrollSections[desktopScrollIndex + 1].getBoundingClientRect().top <= activationY - desktopHysteresis) desktopScrollIndex += 1;
+  } else {
+    while (desktopScrollIndex > 0 && desktopScrollSections[desktopScrollIndex].getBoundingClientRect().top > activationY + desktopHysteresis) desktopScrollIndex -= 1;
+  }
+  desktopLastScrollY = window.scrollY;
+  setActiveDesktopSection(desktopScrollSections[desktopScrollIndex]?.id);
+};
+
+const queueDesktopScrollSpy = () => {
+  if (desktopScrollTicking) return;
+  desktopScrollTicking = true;
+  window.requestAnimationFrame(() => {
+    updateDesktopScrollSpy();
+    desktopScrollTicking = false;
+  });
+};
+
+const startDesktopScrollSpy = () => {
+  if (window.innerWidth <= 768) {
+    desktopScrollSections = [];
+    return;
+  }
+  desktopScrollSections = [...desktopProductGrid.querySelectorAll('.desktop-menu-section')];
+  desktopScrollIndex = findDesktopScrollIndex();
+  desktopLastScrollY = window.scrollY;
+  setActiveDesktopSection(desktopScrollSections[desktopScrollIndex]?.id);
+};
+
+const renderDesktopProducts = () => {
+  if (window.innerWidth <= 768) return;
+  desktopProductGrid.innerHTML = desktopSections.map((section) => {
+    const items = desktopItemsForSection(section);
+    const content = items.length ? items.map(desktopProductCardTemplate).join('') : `<p class="desktop-empty-section">${section.category ? 'No matching items.' : 'No verified menu items are available for this section yet.'}</p>`;
+    return `<section class="desktop-menu-section" id="${section.id}" data-desktop-main="${section.main}"><header class="desktop-section-heading"><span>MINI BITES</span><h2>${section.title}</h2></header>${content}</section>`;
+  }).join('');
+  startDesktopScrollSpy();
+};
+
+const scrollToDesktopSection = (target) => {
+  if (!target) return;
+  window.clearTimeout(desktopProgrammaticTimer);
+  desktopProgrammaticTimer = window.setTimeout(() => {
+    desktopProgrammaticTimer = null;
+    desktopScrollIndex = findDesktopScrollIndex();
+    desktopLastScrollY = window.scrollY;
+    setActiveDesktopSection(desktopScrollSections[desktopScrollIndex]?.id);
+  }, 800);
+  window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - desktopActivationY), behavior: 'smooth' });
+};
+
 const updateFavoritesCount = () => { favoritesButton.lastChild.textContent = ` Favorites: ${favorites.size}`; };
 const setQuickView = (view) => {
   quickView = view;
@@ -228,7 +350,9 @@ const setQuickView = (view) => {
 
 renderSubcategories();
 renderProducts();
+renderDesktopProducts();
 updateFavoritesCount();
+window.addEventListener('scroll', queueDesktopScrollSpy, { passive: true });
 
 const revealItems = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
@@ -271,6 +395,46 @@ productGrid.addEventListener('click', (event) => {
     updateFavoritesCount();
     renderProducts();
   }
+});
+
+desktopProductGrid.addEventListener('click', (event) => {
+  const card = event.target.closest('.desktop-product-card');
+  if (!card) return;
+  const item = menuItems.find((product) => product.id === card.dataset.productId);
+  if (!item) return;
+  const addButton = event.target.closest('.add-button');
+  if (addButton) {
+    addButton.textContent = 'Added';
+    addButton.classList.add('added');
+    window.setTimeout(() => { addButton.textContent = '+ ADD'; addButton.classList.remove('added'); }, 1400);
+    return;
+  }
+  if (event.target.closest('.favorite-button')) {
+    if (favorites.has(item.id)) favorites.delete(item.id); else favorites.add(item.id);
+    updateFavoritesCount();
+    renderDesktopProducts();
+  }
+});
+
+desktopMenuNav.addEventListener('click', (event) => {
+  const link = event.target.closest('a[href^="#desktop-"]');
+  if (!link) return;
+  event.preventDefault();
+  const sectionId = link.dataset.desktopSection || link.getAttribute('href').slice(1);
+  const target = document.getElementById(sectionId);
+  setActiveDesktopSection(sectionId);
+  scrollToDesktopSection(target);
+});
+
+desktopSearchInput.addEventListener('input', () => {
+  desktopSearchTerm = desktopSearchInput.value.trim().toLowerCase();
+  renderDesktopProducts();
+});
+
+desktopPopularButton.addEventListener('click', () => {
+  desktopPopularOnly = !desktopPopularOnly;
+  desktopPopularButton.classList.toggle('active', desktopPopularOnly);
+  renderDesktopProducts();
 });
 
 categoryRow.addEventListener('click', (event) => {
@@ -341,4 +505,12 @@ menuToggle.addEventListener('click', () => menuToggle.getAttribute('aria-expande
 mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
 menuBackdrop.addEventListener('click', closeMenu);
 document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeMenu(); });
-window.addEventListener('resize', () => { if (window.innerWidth > 768) closeMenu(); });
+let viewportWasMobile = window.innerWidth <= 768;
+window.addEventListener('resize', () => {
+  const viewportIsMobile = window.innerWidth <= 768;
+  if (!viewportIsMobile) closeMenu();
+  if (viewportIsMobile === viewportWasMobile) return;
+  viewportWasMobile = viewportIsMobile;
+  renderProducts();
+  if (!viewportIsMobile) renderDesktopProducts();
+});

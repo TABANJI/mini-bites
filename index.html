@@ -8,9 +8,24 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260904-mobile-wordmark-polish">
+  <link rel="stylesheet" href="./style.css?v=20260911-desktop-ordering">
 </head>
 <body>
+  <header class="desktop-order-header">
+    <div class="desktop-order-container desktop-order-header-inner">
+      <a class="desktop-wordmark" href="#desktop-mana2eesh" aria-label="MINI BITES menu">MINI <strong>BITES</strong></a>
+      <nav class="desktop-header-nav" aria-label="Desktop ordering navigation">
+        <a class="active" href="#desktop-mana2eesh">Menu</a>
+        <a href="#desktop-location">Delivery zones</a>
+        <a href="https://maps.google.com/?q=Centre+Azure+Jdeideh" target="_blank" rel="noopener">Leave a review</a>
+        <a href="#desktop-information">Delivery terms</a>
+      </nav>
+      <div class="desktop-header-actions">
+        <button class="desktop-cart-button" type="button" aria-label="Cart"><span aria-hidden="true">Bag</span><strong>0</strong></button>
+        <button class="desktop-menu-button" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href="#home" aria-label="MINI BITES home">
@@ -49,6 +64,58 @@
     </div>
     <div class="mobile-subcategory-row" role="list" aria-label="Menu filters"></div>
   </nav>
+
+  <div class="desktop-order-app">
+    <div class="desktop-order-container">
+      <section class="desktop-promo" aria-label="Daily specials">
+        <div><span>DAILY SPECIALS</span><h1>Something fresh,<br>every day.</h1></div>
+        <p>Ask about today’s off-menu favorites, seasonal ingredients and fresh ideas.</p>
+        <a href="tel:01873493">Call 01 873 493 <span aria-hidden="true">↗</span></a>
+      </section>
+
+      <div class="desktop-order-grid">
+        <aside class="desktop-left-sidebar" aria-label="Menu navigation">
+          <div class="desktop-delivery-card">
+            <span>DELIVERY FROM</span>
+            <strong>MINI BITES</strong>
+            <small>Jdeideh, Centre Azure</small>
+          </div>
+          <button class="desktop-popular-button" type="button"><span aria-hidden="true">★</span> Popular</button>
+          <nav class="desktop-menu-nav">
+            <div class="desktop-nav-group">
+              <a class="desktop-main-link active" href="#desktop-mana2eesh" data-desktop-target="mini-bites">MINI BITES</a>
+              <div class="desktop-subnav">
+                <a class="active" href="#desktop-mana2eesh" data-desktop-section="desktop-mana2eesh">MANA2EESH</a>
+                <a href="#desktop-italian-pizza" data-desktop-section="desktop-italian-pizza">ITALIAN PIZZA</a>
+                <a href="#desktop-mu3ajaneit" data-desktop-section="desktop-mu3ajaneit">MU3AJANEIT</a>
+                <a href="#desktop-desserts" data-desktop-section="desktop-desserts">DESSERTS</a>
+              </div>
+            </div>
+            <a class="desktop-main-link" href="#desktop-burger-sandwich" data-desktop-section="desktop-burger-sandwich" data-desktop-target="sandwiches-burgers">Sandwiches &amp; Burgers</a>
+            <a class="desktop-main-link" href="#desktop-drinks" data-desktop-section="desktop-drinks" data-desktop-target="drinks">Drinks</a>
+            <a class="desktop-main-link" href="#desktop-gift-certificates" data-desktop-section="desktop-gift-certificates" data-desktop-target="gift-certificates">Gift Certificates</a>
+          </nav>
+        </aside>
+
+        <div class="desktop-menu-column" role="main">
+          <div class="desktop-product-grid" aria-live="polite"></div>
+        </div>
+
+        <aside class="desktop-right-sidebar" id="desktop-information">
+          <label class="desktop-search">
+            <span class="desktop-search-icon" aria-hidden="true"></span>
+            <input type="search" placeholder="Search menu" aria-label="Search menu">
+          </label>
+          <section class="desktop-info-card">
+            <h2>Restaurant information</h2>
+            <div class="desktop-info-row" id="desktop-location"><span aria-hidden="true">⌖</span><div><small>Location</small><strong>Jdeideh, Centre Azure</strong></div></div>
+            <div class="desktop-info-row"><span aria-hidden="true">☎</span><div><small>Contact</small><a href="tel:01873493">01 873 493</a><a href="tel:71344413">71 344 413</a></div></div>
+            <a class="desktop-directions-link" href="https://maps.google.com/?q=Centre+Azure+Jdeideh" target="_blank" rel="noopener">Get directions <span aria-hidden="true">↗</span></a>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </div>
 
   <main>
     <section class="hero" id="home">
@@ -203,6 +270,6 @@
     <div class="container footer-bottom"><span>© <span id="year"></span> MINI BITES. All rights reserved.</span><span>Fresh bites, made right.</span></div>
   </footer>
 
-  <script src="./script.js?v=20260904-stable-scroll-nav"></script>
+  <script src="./script.js?v=20260911-desktop-ordering"></script>
 </body>
 </html>
