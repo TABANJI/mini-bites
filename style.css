@@ -365,11 +365,15 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .menu-backdrop.is-visible { visibility: visible; opacity: 1; pointer-events: auto; }
 
   .mobile-catalog-nav { position: sticky; z-index: 90; top: 72px; display: block; background: var(--mobile-order-bg); border-bottom: 1px solid var(--line); box-shadow: none; }
-  .mobile-action-row { display: grid; grid-template-columns: 1fr 1fr; height: 60px; background: var(--mobile-order-bg); border-bottom: 1px solid var(--mobile-border); }
-  .mobile-action-row button { position: relative; display: flex; min-height: 60px; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; color: var(--dark); background: var(--mobile-order-bg); border: 0; border-radius: 0; font-size: 14px; font-weight: 700; }
-  .mobile-action-row button span { font-size: 19px; line-height: 1; }
+  .mobile-action-row { display: grid; grid-template-columns: 1fr 1fr; height: 60px; background: var(--mobile-order-bg); border-top: 1px solid var(--mobile-border); border-bottom: 1px solid var(--mobile-border); }
+  .mobile-action-row button { position: relative; display: flex; min-height: 60px; align-items: center; justify-content: center; gap: 9px; padding: 0 12px; color: var(--dark); background: var(--mobile-order-bg); border: 0; border-radius: 0; font-size: 14px; font-weight: 700; transition: background .15s ease; }
+  .mobile-action-row button span { width: 25px; height: 25px; display: grid; place-items: center; flex: 0 0 auto; line-height: 1; }
+  .mobile-action-row button span svg { width: 24px; height: 24px; display: block; fill: currentColor; transition: transform .12s ease; }
+  .mobile-action-row button:first-child span { color: var(--mobile-accent); }
+  .mobile-action-row button:last-child span { color: var(--dark); }
+  .mobile-action-row button:active { background: #f7f7f7; }
+  .mobile-action-row button:active span svg { transform: scale(.94); }
   .mobile-action-row button + button::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 1px; background: var(--mobile-border); }
-  .mobile-action-row button.active span { color: var(--mobile-accent); }
   .mobile-category-row, .mobile-subcategory-row { display: flex; width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; scroll-behavior: smooth; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
   .mobile-category-row::-webkit-scrollbar, .mobile-subcategory-row::-webkit-scrollbar { display: none; }
   .mobile-category-row { height: 48px; align-items: stretch; gap: 24px; padding: 0 16px; background: var(--mobile-order-bg); border-bottom: 1px solid var(--mobile-border); }
