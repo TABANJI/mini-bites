@@ -325,6 +325,8 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
 @media (min-width: 769px) {
   html { scroll-padding-top: 220px; }
   body { background: #f5f5f5; }
+  body > .site-header, body > .mobile-catalog-nav, body > main, body > .site-footer { display: none !important; height: 0 !important; margin: 0 !important; padding: 0 !important; overflow: hidden !important; }
+  body > .desktop-order-header, body > .desktop-order-app, body > .desktop-order-footer { display: block !important; }
   .desktop-order-container { width: min(calc(100% - 48px), 1040px); }
 
   .desktop-order-header { height: 104px; background: var(--white); }
@@ -333,16 +335,12 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-brand-block > span { color: #777; font-size: 11px; font-weight: 650; white-space: nowrap; }
   .desktop-wordmark { font-size: 22px; }
   .desktop-header-actions { gap: 7px; }
-  .desktop-favorites-button, .desktop-header-search-button, .desktop-menu-button { height: 38px; display: flex; align-items: center; justify-content: center; color: var(--dark); background: var(--white); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
-  .desktop-favorites-button { gap: 8px; padding: 0 12px; font-size: 11px; font-weight: 800; }
-  .desktop-favorites-button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-  .desktop-favorites-button.active svg { color: var(--yellow); fill: currentColor; }
-  .desktop-header-search-button, .desktop-menu-button { width: 38px; padding: 0; }
-  .desktop-header-search-button span { position: relative; width: 14px; height: 14px; border: 2px solid currentColor; border-radius: 50%; }
-  .desktop-header-search-button span::after { content: ""; position: absolute; right: -5px; bottom: -3px; width: 6px; height: 2px; background: currentColor; border-radius: 2px; transform: rotate(45deg); }
+  .desktop-account-button, .desktop-menu-button { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; padding: 0; color: var(--dark); background: var(--white); border: 1px solid var(--line); border-radius: 8px; cursor: pointer; }
+  .desktop-account-button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   .desktop-menu-button { display: grid; place-content: center; gap: 4px; }
   .desktop-menu-button span { width: 16px; }
-  .desktop-cart-button { display: none; }
+  .desktop-cart-button { height: 38px; display: flex; gap: 8px; padding: 0 10px; border-radius: 8px; }
+  .desktop-cart-button strong { width: 19px; height: 19px; }
 
   .desktop-header-nav { height: 42px; border-top: 1px solid rgba(23,23,23,.08); }
   .desktop-header-nav > .desktop-order-container { height: 100%; display: flex; align-items: stretch; gap: 32px; }
@@ -353,17 +351,23 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-menu-nav { position: sticky; z-index: 110; top: 104px; padding: 0; background: var(--white); box-shadow: 0 3px 12px rgba(23,23,23,.06); }
   .desktop-menu-nav a { border-left: 0; }
   .desktop-primary-bar { background: var(--yellow); }
-  .desktop-primary-inner { min-height: 58px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .desktop-primary-inner { min-height: 58px; display: flex; align-items: center; gap: 22px; }
+  .desktop-delivery-selector { align-self: stretch; display: flex; min-width: 105px; justify-content: center; flex-direction: column; border-right: 1px solid rgba(23,23,23,.2); padding-right: 18px; }
+  .desktop-delivery-selector span { margin-bottom: 2px; color: rgba(23,23,23,.58); font-size: 8px; font-weight: 800; letter-spacing: .1em; }
+  .desktop-delivery-selector strong { font-size: 11px; }
   .desktop-primary-links { min-width: 0; display: flex; align-items: stretch; align-self: stretch; gap: 25px; }
   .desktop-primary-links .desktop-main-link { position: relative; display: flex; align-items: center; padding: 0; color: rgba(23,23,23,.68); border: 0; font-size: 12px; font-weight: 800; white-space: nowrap; }
   .desktop-primary-links .desktop-main-link::after { content: ""; position: absolute; right: 0; bottom: 0; left: 0; height: 3px; background: var(--dark); transform: scaleX(0); transition: transform .18s ease; }
   .desktop-primary-links .desktop-main-link:hover, .desktop-primary-links .desktop-main-link.active { color: var(--dark); }
   .desktop-primary-links .desktop-main-link.active::after { transform: scaleX(1); }
-  .desktop-primary-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+  .desktop-primary-actions { display: flex; align-items: center; gap: 7px; flex: 0 0 auto; margin-left: auto; }
   .desktop-search { width: 178px; height: 38px; padding: 0 12px; background: rgba(255,255,255,.88); border-color: rgba(23,23,23,.14); border-radius: 8px; }
   .desktop-search input { font-size: 11px; }
   .desktop-popular-button { width: auto; height: 38px; gap: 7px; margin: 0; padding: 0 12px; background: rgba(255,255,255,.88); border-color: rgba(23,23,23,.14); border-radius: 8px; font-size: 11px; }
   .desktop-popular-button span { font-size: 16px; }
+  .desktop-favorites-button { height: 38px; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 0 11px; color: var(--dark); background: rgba(255,255,255,.88); border: 1px solid rgba(23,23,23,.14); border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; }
+  .desktop-favorites-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .desktop-favorites-button.active svg { color: var(--yellow); fill: currentColor; }
   .desktop-subcategory-bar { height: 48px; background: var(--white); border-bottom: 1px solid var(--line); }
   .desktop-subnav { height: 100%; display: flex; align-items: stretch; gap: 30px; margin: 0; }
   .desktop-subnav a { position: relative; display: flex; align-items: center; padding: 0; color: #777; border: 0; font-size: 11px; font-weight: 800; white-space: nowrap; }
@@ -435,6 +439,9 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-primary-links { gap: 16px; }
   .desktop-primary-links .desktop-main-link { font-size: 11px; }
   .desktop-search { width: 150px; }
+  .desktop-delivery-selector { display: none; }
+  .desktop-favorites-button { width: 38px; padding: 0; }
+  .desktop-favorites-button span { display: none; }
 }
 
 @media (max-width: 768px) {

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260916-desktop-ordering-grid">
+  <link rel="stylesheet" href="./style.css?v=20260916-desktop-ordering-final">
 </head>
 <body>
   <header class="desktop-order-header">
@@ -18,11 +18,8 @@
         <span>Jdeideh, Centre Azure</span>
       </div>
       <div class="desktop-header-actions">
-        <button class="desktop-favorites-button" type="button" aria-label="Show favorite products">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/></svg>
-          <span>Favorites: 0</span>
-        </button>
-        <button class="desktop-header-search-button" type="button" aria-label="Focus menu search"><span aria-hidden="true"></span></button>
+        <button class="desktop-cart-button" type="button" aria-label="Cart"><span>Order</span><strong>0</strong></button>
+        <button class="desktop-account-button" type="button" aria-label="Account"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg></button>
         <button class="desktop-menu-button" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
       </div>
     </div>
@@ -78,6 +75,7 @@
     <nav class="desktop-menu-nav" aria-label="Desktop menu categories">
       <div class="desktop-primary-bar">
         <div class="desktop-order-container desktop-primary-inner">
+          <a class="desktop-delivery-selector" href="#desktop-location"><span>DELIVERY FROM</span><strong>MINI BITES</strong></a>
           <div class="desktop-primary-links">
             <a class="desktop-main-link active" href="#desktop-mana2eesh" data-desktop-section="desktop-mana2eesh" data-desktop-target="mini-bites">MINI BITES</a>
             <a class="desktop-main-link" href="#desktop-burger-sandwich" data-desktop-section="desktop-burger-sandwich" data-desktop-target="sandwiches-burgers">Sandwiches &amp; Burgers</a>
@@ -90,6 +88,10 @@
               <input type="search" placeholder="Search menu" aria-label="Search menu">
             </label>
             <button class="desktop-popular-button" type="button"><span aria-hidden="true">★</span> Popular</button>
+            <button class="desktop-favorites-button" type="button" aria-label="Show favorite products">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/></svg>
+              <span>Favorites: 0</span>
+            </button>
           </div>
         </div>
       </div>
@@ -326,6 +328,6 @@
     <div class="container footer-bottom"><span>© <span id="year"></span> MINI BITES. All rights reserved.</span><span>Fresh bites, made right.</span></div>
   </footer>
 
-  <script src="./script.js?v=20260916-desktop-ordering-grid"></script>
+  <script src="./script.js?v=20260916-desktop-ordering-final"></script>
 </body>
 </html>

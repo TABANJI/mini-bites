@@ -69,7 +69,6 @@ const desktopMenuNav = document.querySelector('.desktop-menu-nav');
 const desktopSearchInput = document.querySelector('.desktop-search input');
 const desktopPopularButton = document.querySelector('.desktop-popular-button');
 const desktopFavoritesButton = document.querySelector('.desktop-favorites-button');
-const desktopHeaderSearchButton = document.querySelector('.desktop-header-search-button');
 const favoritesStorageKey = 'miniBitesFavorites';
 const loadFavorites = () => {
   try {
@@ -477,11 +476,6 @@ desktopFavoritesButton.addEventListener('click', () => {
   desktopFavoritesButton.classList.toggle('active', desktopFavoritesOnly);
   desktopPopularButton.classList.toggle('active', desktopPopularOnly);
   renderDesktopProducts();
-});
-
-desktopHeaderSearchButton.addEventListener('click', () => {
-  desktopSearchInput.focus();
-  desktopSearchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 categoryRow.addEventListener('click', (event) => {
