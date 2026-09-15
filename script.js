@@ -68,7 +68,29 @@ const desktopProductGrid = document.querySelector('.desktop-product-grid');
 const desktopMenuNav = document.querySelector('.desktop-menu-nav');
 const desktopSearchInput = document.querySelector('.desktop-search input');
 const desktopPopularButton = document.querySelector('.desktop-popular-button');
-const favorites = new Set();
+const favoritesStorageKey = 'miniBitesFavorites';
+const loadFavorites = () => {
+  try {
+    const savedFavorites = JSON.parse(localStorage.getItem(favoritesStorageKey) || '[]');
+    if (!Array.isArray(savedFavorites)) return new Set();
+    const validProductIds = new Set(menuItems.map((item) => item.id));
+    return new Set(savedFavorites.filter((id) => typeof id === 'string' && validProductIds.has(id)));
+  } catch {
+    return new Set();
+  }
+};
+const favorites = loadFavorites();
+const saveFavorites = () => {
+  try {
+    localStorage.setItem(favoritesStorageKey, JSON.stringify([...favorites]));
+  } catch {
+    // Favorites still work for the current page if storage is unavailable.
+  }
+};
+const toggleFavorite = (productId) => {
+  if (favorites.has(productId)) favorites.delete(productId); else favorites.add(productId);
+  saveFavorites();
+};
 let activeMainSection = 'mini-bites';
 let activeCategory = 'mana2eesh';
 let activeFilter = 'mana2eesh';
@@ -394,7 +416,7 @@ productGrid.addEventListener('click', (event) => {
     return;
   }
   if (event.target.closest('.favorite-button')) {
-    if (favorites.has(item.id)) favorites.delete(item.id); else favorites.add(item.id);
+    toggleFavorite(item.id);
     updateFavoritesCount();
     renderProducts();
   }
@@ -413,7 +435,7 @@ desktopProductGrid.addEventListener('click', (event) => {
     return;
   }
   if (event.target.closest('.favorite-button')) {
-    if (favorites.has(item.id)) favorites.delete(item.id); else favorites.add(item.id);
+    toggleFavorite(item.id);
     updateFavoritesCount();
     renderDesktopProducts();
   }
