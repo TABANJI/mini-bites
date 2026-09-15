@@ -68,6 +68,8 @@ const desktopProductGrid = document.querySelector('.desktop-product-grid');
 const desktopMenuNav = document.querySelector('.desktop-menu-nav');
 const desktopSearchInput = document.querySelector('.desktop-search input');
 const desktopPopularButton = document.querySelector('.desktop-popular-button');
+const desktopFavoritesButton = document.querySelector('.desktop-favorites-button');
+const desktopHeaderSearchButton = document.querySelector('.desktop-header-search-button');
 const favoritesStorageKey = 'miniBitesFavorites';
 const loadFavorites = () => {
   try {
@@ -104,13 +106,14 @@ const scrollActivationY = 226;
 const scrollHysteresis = 32;
 let desktopSearchTerm = '';
 let desktopPopularOnly = false;
+let desktopFavoritesOnly = false;
 let desktopScrollSections = [];
 let activeDesktopSection = 'desktop-mana2eesh';
 let desktopScrollIndex = 0;
 let desktopScrollTicking = false;
 let desktopLastScrollY = window.scrollY;
 let desktopProgrammaticTimer = null;
-const desktopActivationY = 100;
+const desktopActivationY = 220;
 const desktopHysteresis = 24;
 
 const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
@@ -135,8 +138,9 @@ const desktopProductCardTemplate = (item) => {
   const badge = item.popular ? '<mark>Popular</mark>' : '';
   const options = item.options.length ? `<button class="options-button" type="button"><span aria-hidden="true">↓</span> Show options</button>` : '';
   return `<article class="desktop-product-card product-card" data-product-id="${escapeHtml(item.id)}">
-    <div class="desktop-product-body"><h3>${escapeHtml(item.name)}</h3><strong class="desktop-product-price">${escapeHtml(item.priceLabel)}</strong>${description}<div class="desktop-product-controls">${options}<button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${favoriteIcon}</button><button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">${shareIcon}</button></div></div>
-    <div class="desktop-product-media"><div class="product-image image-placeholder"><span>PRODUCT PHOTO</span>${badge}</div><button type="button" class="add-button">+ ADD</button></div>
+    <div class="desktop-product-image-wrap"><div class="product-image image-placeholder"><span>PRODUCT PHOTO</span>${badge}</div><button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${favoriteIcon}</button></div>
+    <div class="desktop-product-body"><h3>${escapeHtml(item.name)}</h3>${description}<div class="desktop-product-controls">${options}<button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">${shareIcon}</button></div></div>
+    <div class="desktop-product-footer"><strong class="desktop-product-price">${escapeHtml(item.priceLabel)}</strong><button type="button" class="add-button">+ ADD</button></div>
   </article>`;
 };
 
@@ -279,7 +283,7 @@ const desktopSections = [
 
 const desktopItemsForSection = (section) => {
   if (!section.category) return [];
-  return menuItems.filter((item) => item.category === section.category && (!desktopPopularOnly || item.popular) && (!desktopSearchTerm || item.name.toLowerCase().includes(desktopSearchTerm)));
+  return menuItems.filter((item) => item.category === section.category && (!desktopPopularOnly || item.popular) && (!desktopFavoritesOnly || favorites.has(item.id)) && (!desktopSearchTerm || item.name.toLowerCase().includes(desktopSearchTerm)));
 };
 
 const setActiveDesktopSection = (sectionId) => {
@@ -289,7 +293,7 @@ const setActiveDesktopSection = (sectionId) => {
   desktopMenuNav.querySelectorAll('.active').forEach((link) => link.classList.remove('active'));
   if (section?.main === 'mini-bites') {
     desktopMenuNav.querySelector('[data-desktop-target="mini-bites"]')?.classList.add('active');
-    desktopMenuNav.querySelector(`[data-desktop-section="${sectionId}"]`)?.classList.add('active');
+    desktopMenuNav.querySelector(`.desktop-subnav [data-desktop-section="${sectionId}"]`)?.classList.add('active');
   } else {
     desktopMenuNav.querySelector(`[data-desktop-section="${sectionId}"]`)?.classList.add('active');
   }
@@ -364,7 +368,10 @@ const scrollToDesktopSection = (target) => {
   window.scrollTo({ top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - desktopActivationY), behavior: 'smooth' });
 };
 
-const updateFavoritesCount = () => { favoritesButton.lastChild.textContent = ` Favorites: ${favorites.size}`; };
+const updateFavoritesCount = () => {
+  favoritesButton.lastChild.textContent = ` Favorites: ${favorites.size}`;
+  desktopFavoritesButton.querySelector('span:last-child').textContent = `Favorites: ${favorites.size}`;
+};
 const setQuickView = (view) => {
   quickView = view;
   activeFilter = 'mana2eesh';
@@ -458,8 +465,23 @@ desktopSearchInput.addEventListener('input', () => {
 
 desktopPopularButton.addEventListener('click', () => {
   desktopPopularOnly = !desktopPopularOnly;
+  if (desktopPopularOnly) desktopFavoritesOnly = false;
+  desktopPopularButton.classList.toggle('active', desktopPopularOnly);
+  desktopFavoritesButton.classList.toggle('active', desktopFavoritesOnly);
+  renderDesktopProducts();
+});
+
+desktopFavoritesButton.addEventListener('click', () => {
+  desktopFavoritesOnly = !desktopFavoritesOnly;
+  if (desktopFavoritesOnly) desktopPopularOnly = false;
+  desktopFavoritesButton.classList.toggle('active', desktopFavoritesOnly);
   desktopPopularButton.classList.toggle('active', desktopPopularOnly);
   renderDesktopProducts();
+});
+
+desktopHeaderSearchButton.addEventListener('click', () => {
+  desktopSearchInput.focus();
+  desktopSearchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
 });
 
 categoryRow.addEventListener('click', (event) => {
@@ -534,6 +556,7 @@ const resetToHomeMenu = () => {
   activeFilter = 'mana2eesh';
   desktopSearchTerm = '';
   desktopPopularOnly = false;
+  desktopFavoritesOnly = false;
 
   quickViewButtons.forEach((button) => button.classList.remove('active'));
   categoryRow.querySelector('.active')?.classList.remove('active');
@@ -541,6 +564,7 @@ const resetToHomeMenu = () => {
   categoryHeading.textContent = 'MANA2EESH';
   desktopSearchInput.value = '';
   desktopPopularButton.classList.remove('active');
+  desktopFavoritesButton.classList.remove('active');
 
   renderSubcategories();
   renderProducts();
