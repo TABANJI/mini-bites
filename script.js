@@ -526,6 +526,37 @@ const openMenu = () => {
   menuBackdrop.classList.add('is-visible');
   document.body.classList.add('menu-open');
 };
+
+const resetToHomeMenu = () => {
+  quickView = 'all';
+  activeMainSection = 'mini-bites';
+  activeCategory = 'mana2eesh';
+  activeFilter = 'mana2eesh';
+  desktopSearchTerm = '';
+  desktopPopularOnly = false;
+
+  quickViewButtons.forEach((button) => button.classList.remove('active'));
+  categoryRow.querySelector('.active')?.classList.remove('active');
+  categoryRow.querySelector('[data-main-section="mini-bites"]')?.classList.add('active');
+  categoryHeading.textContent = 'MANA2EESH';
+  desktopSearchInput.value = '';
+  desktopPopularButton.classList.remove('active');
+
+  renderSubcategories();
+  renderProducts();
+  renderDesktopProducts();
+  setActiveDesktopSection('desktop-mana2eesh');
+  closeMenu();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+document.querySelectorAll('.desktop-order-header .desktop-wordmark, .site-header .brand').forEach((homeLink) => {
+  homeLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    resetToHomeMenu();
+  });
+});
+
 menuToggle.addEventListener('click', () => menuToggle.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu());
 mobileMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
 menuBackdrop.addEventListener('click', closeMenu);

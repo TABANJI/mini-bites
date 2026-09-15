@@ -185,7 +185,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-order-header { position: sticky; z-index: 120; top: 0; display: block; height: 76px; color: var(--dark); background: var(--white); border-bottom: 1px solid var(--line); }
   .desktop-order-container { width: min(calc(100% - 48px), 1300px); margin-inline: auto; }
   .desktop-order-header-inner { height: 100%; display: grid; grid-template-columns: 210px minmax(0, 1fr) auto; align-items: center; gap: 28px; }
-  .desktop-wordmark { width: max-content; font-family: "Manrope", sans-serif; font-size: 23px; font-weight: 800; line-height: 1; letter-spacing: -.04em; }
+  .desktop-wordmark { width: max-content; font-family: "Manrope", sans-serif; font-size: 23px; font-weight: 800; line-height: 1; letter-spacing: -.04em; cursor: pointer; }
   .desktop-wordmark strong { color: var(--yellow); }
   .desktop-header-nav { display: flex; align-items: stretch; gap: clamp(20px, 2.5vw, 40px); height: 100%; }
   .desktop-header-nav a { position: relative; display: flex; align-items: center; color: #777; font-size: 13px; font-weight: 700; white-space: nowrap; }
