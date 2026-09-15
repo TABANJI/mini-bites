@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css?v=20260915-quick-view-icons">
+  <link rel="stylesheet" href="./style.css?v=20260915-mobile-location-social">
 </head>
 <body>
   <header class="desktop-order-header">
@@ -277,24 +277,35 @@
     </section>
 
     <section class="contact section" id="contact">
-      <div class="container contact-grid">
-        <div class="contact-copy reveal">
-          <span class="kicker">COME SAY HELLO</span>
-          <h2>Find your next<br>favorite bite.</h2>
-          <div class="contact-details">
-            <div><span>Location</span><strong>Jdeideh, Centre Azure</strong></div>
-            <div><span>Phone</span><strong><a href="tel:01873493">01 873 493</a><br><a href="tel:71344413">71 344 413</a></strong></div>
+      <div class="container mobile-location-footer">
+        <section class="mobile-social-section" aria-labelledby="mobile-social-heading">
+          <h2 id="mobile-social-heading">Follow us</h2>
+          <nav class="mobile-social-links" aria-label="Social media">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="MINI BITES on Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 21v-8h3l.5-4H14V6.7c0-1.2.4-2 2.1-2H18V1.2c-.7-.1-1.8-.2-3-.2-3 0-5 1.8-5 5.3V9H7v4h3v8h4Z"/></svg>
+              <span>Facebook</span>
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="MINI BITES on Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="icon-fill"/></svg>
+              <span>Instagram</span>
+            </a>
+            <a href="https://www.tiktok.com/" target="_blank" rel="noopener" aria-label="MINI BITES on TikTok">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3v11.2a4.7 4.7 0 1 1-4-4.6"/><path d="M15 3c.8 2.6 2.5 4.1 5 4.5"/></svg>
+              <span>TikTok</span>
+            </a>
+          </nav>
+        </section>
+        <div class="mobile-location-divider" aria-hidden="true"></div>
+        <section class="mobile-map-section" aria-labelledby="mobile-map-heading">
+          <h2 id="mobile-map-heading">Find us</h2>
+          <div class="mobile-map-frame">
+            <iframe src="https://www.google.com/maps?q=MINI+BITES,+Centre+Azur,+Jdeideh,+Lebanon&amp;output=embed" title="Google Map showing MINI BITES at Centre Azur, Jdeideh" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
-          <a class="button button-dark" href="https://maps.google.com/?q=Centre+Azure+Jdeideh" target="_blank" rel="noopener">Get Directions <span>↗</span></a>
-        </div>
-        <div class="map-placeholder reveal" aria-label="Map placeholder for Centre Azure in Jdeideh">
-          <div class="map-road road-one"></div>
-          <div class="map-road road-two"></div>
-          <div class="map-road road-three"></div>
-          <div class="map-pin"><span>MB</span></div>
-          <div class="map-label"><strong>MINI BITES</strong><span>Centre Azure, Jdeideh</span></div>
-          <small>MAP PLACEHOLDER</small>
-        </div>
+          <a class="mobile-directions-link" href="https://www.google.com/maps/dir/?api=1&amp;destination=MINI+BITES+Centre+Azur+Jdeideh+Lebanon" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 9-9 9-9-9 9-9Z"/><path d="M8 13h7m0 0-3-3m3 3-3 3"/></svg>
+            <span>Get directions</span>
+          </a>
+        </section>
       </div>
     </section>
   </main>
