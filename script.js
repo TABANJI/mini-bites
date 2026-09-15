@@ -93,6 +93,9 @@ const desktopHysteresis = 24;
 
 const escapeHtml = (value) => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 
+const favoriteIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z"/></svg>';
+const shareIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.59 10.51 6.83-3.98M8.59 13.49l6.83 3.98"/></svg>';
+
 const productCardTemplate = (item) => {
   const isFavorite = favorites.has(item.id);
   const description = item.description ? `<p>${escapeHtml(item.description)}</p>` : '';
@@ -100,7 +103,7 @@ const productCardTemplate = (item) => {
   const options = item.options.length ? `<button class="options-button" type="button" aria-label="Show options for ${escapeHtml(item.name)}"><span aria-hidden="true">↓</span> Show options</button>` : '';
   return `<article class="product-card reveal is-visible" data-product-id="${escapeHtml(item.id)}">
     <div class="product-media"><div class="product-image image-placeholder"><span>PRODUCT PHOTO</span>${badge}</div><button type="button" class="add-button mobile-add-button">+ ADD</button></div>
-    <div class="product-body"><h3>${escapeHtml(item.name)}</h3>${description}<div class="product-options">${options}<div class="product-quick-actions"><button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button><button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">↗</button></div></div><div class="product-footer"><strong>${escapeHtml(item.priceLabel)}</strong><button type="button" class="add-button">Add to order <span>+</span></button></div></div>
+    <div class="product-body"><h3>${escapeHtml(item.name)}</h3>${description}<div class="product-options">${options}<div class="product-quick-actions"><button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${favoriteIcon}</button><button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">${shareIcon}</button></div></div><div class="product-footer"><strong>${escapeHtml(item.priceLabel)}</strong><button type="button" class="add-button">Add to order <span>+</span></button></div></div>
   </article>`;
 };
 
@@ -110,7 +113,7 @@ const desktopProductCardTemplate = (item) => {
   const badge = item.popular ? '<mark>Popular</mark>' : '';
   const options = item.options.length ? `<button class="options-button" type="button"><span aria-hidden="true">↓</span> Show options</button>` : '';
   return `<article class="desktop-product-card product-card" data-product-id="${escapeHtml(item.id)}">
-    <div class="desktop-product-body"><h3>${escapeHtml(item.name)}</h3><strong class="desktop-product-price">${escapeHtml(item.priceLabel)}</strong>${description}<div class="desktop-product-controls">${options}<button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button><button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">↗</button></div></div>
+    <div class="desktop-product-body"><h3>${escapeHtml(item.name)}</h3><strong class="desktop-product-price">${escapeHtml(item.priceLabel)}</strong>${description}<div class="desktop-product-controls">${options}<button class="favorite-button${isFavorite ? ' is-active' : ''}" type="button" aria-label="${isFavorite ? 'Remove' : 'Add'} ${escapeHtml(item.name)} ${isFavorite ? 'from' : 'to'} favorites" aria-pressed="${isFavorite}">${favoriteIcon}</button><button class="share-button" type="button" aria-label="Share ${escapeHtml(item.name)}">${shareIcon}</button></div></div>
     <div class="desktop-product-media"><div class="product-image image-placeholder"><span>PRODUCT PHOTO</span>${badge}</div><button type="button" class="add-button">+ ADD</button></div>
   </article>`;
 };
