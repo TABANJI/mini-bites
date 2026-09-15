@@ -346,7 +346,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .site-header .brand-mark { display: none; }
   .site-header .brand-name { color: var(--dark); font-size: 20px; font-weight: 800; line-height: 1; letter-spacing: -.4px; white-space: nowrap; }
   .header-cta { display: none; }
-  .mobile-header-actions { display: flex; align-items: center; gap: 4px; }
+  .mobile-header-actions { display: flex; align-items: center; gap: 4px; transform: translateX(12px); }
   .search-button { position: relative; display: grid; place-items: center; width: 48px; height: 48px; padding: 0; color: var(--dark); background: transparent; border: 0; border-radius: 0; cursor: pointer; }
   .search-button span { position: relative; display: block; width: 17px; height: 17px; border: 2px solid currentColor; border-radius: 50%; }
   .search-button span::after { content: ""; position: absolute; width: 7px; height: 2px; right: -5px; bottom: -3px; background: currentColor; border-radius: 2px; transform: rotate(45deg); }
