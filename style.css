@@ -351,7 +351,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-menu-nav { position: sticky; z-index: 110; top: 104px; padding: 0; background: var(--white); box-shadow: 0 3px 12px rgba(23,23,23,.06); }
   .desktop-menu-nav a { border-left: 0; }
   .desktop-primary-bar { background: var(--yellow); }
-  .desktop-primary-inner { min-height: 58px; display: flex; align-items: center; gap: 22px; }
+  .desktop-order-container.desktop-primary-inner { width: min(calc(100% - 48px), 932px); min-height: 58px; display: flex; align-items: center; gap: 22px; margin-inline: auto; }
   .desktop-delivery-selector { align-self: stretch; display: flex; min-width: 105px; justify-content: center; flex-direction: column; border-right: 1px solid rgba(23,23,23,.2); padding-right: 18px; }
   .desktop-delivery-selector span { margin-bottom: 2px; color: rgba(23,23,23,.58); font-size: 8px; font-weight: 800; letter-spacing: .1em; }
   .desktop-delivery-selector strong { font-size: 11px; }
