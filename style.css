@@ -353,9 +353,8 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-primary-bar { background: var(--yellow); }
   .desktop-order-container.desktop-primary-inner { width: min(calc(100% - 48px), 932px); min-height: 58px; display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; gap: 24px; margin-inline: auto; }
   .desktop-primary-left { min-width: 0; display: flex; align-items: stretch; align-self: stretch; gap: 16px; white-space: nowrap; }
-  .desktop-delivery-selector { align-self: stretch; display: inline-flex; width: max-content; min-width: 0; align-items: center; justify-content: center; gap: 4px; padding: 0 16px 0 0; border-right: 1px solid rgba(23,23,23,.2); white-space: nowrap; }
-  .desktop-delivery-selector span { margin: 0; color: rgba(23,23,23,.58); font-size: 8px; font-weight: 800; letter-spacing: .1em; white-space: nowrap; }
-  .desktop-delivery-selector strong { font-size: 11px; }
+  .desktop-delivery-selector { align-self: stretch; display: inline-flex; width: max-content; min-width: 0; align-items: center; justify-content: center; gap: 3px; padding: 0 12px; border-right: 1px solid rgba(23,23,23,.2); color: var(--dark); font-size: 11px; font-weight: 800; line-height: 1; white-space: nowrap; }
+  .desktop-delivery-selector span, .desktop-delivery-selector strong { margin: 0; color: inherit; font: inherit; letter-spacing: 0; white-space: nowrap; }
   .desktop-primary-links { min-width: 0; display: flex; align-items: stretch; align-self: stretch; gap: 16px; white-space: nowrap; }
   .desktop-primary-links .desktop-main-link { position: relative; display: flex; align-items: center; padding: 0; color: rgba(23,23,23,.68); border: 0; font-size: 12px; font-weight: 800; white-space: nowrap; }
   .desktop-primary-links .desktop-main-link::after { content: ""; position: absolute; right: 0; bottom: 0; left: 0; height: 3px; background: var(--dark); transform: scaleX(0); transition: transform .18s ease; }
