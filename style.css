@@ -352,8 +352,8 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-menu-nav a { border-left: 0; }
   .desktop-primary-bar { background: var(--yellow); }
   .desktop-order-container.desktop-primary-inner { width: min(calc(100% - 48px), 932px); min-height: 58px; display: flex; align-items: center; gap: 22px; margin-inline: auto; }
-  .desktop-delivery-selector { align-self: stretch; display: flex; min-width: 105px; justify-content: center; flex-direction: column; border-right: 1px solid rgba(23,23,23,.2); padding-right: 18px; }
-  .desktop-delivery-selector span { margin-bottom: 2px; color: rgba(23,23,23,.58); font-size: 8px; font-weight: 800; letter-spacing: .1em; }
+  .desktop-delivery-selector { align-self: stretch; display: inline-flex; width: max-content; min-width: 0; align-items: center; justify-content: center; gap: 4px; padding: 0 16px 0 0; border-right: 1px solid rgba(23,23,23,.2); white-space: nowrap; }
+  .desktop-delivery-selector span { margin: 0; color: rgba(23,23,23,.58); font-size: 8px; font-weight: 800; letter-spacing: .1em; white-space: nowrap; }
   .desktop-delivery-selector strong { font-size: 11px; }
   .desktop-primary-links { min-width: 0; display: flex; align-items: stretch; align-self: stretch; gap: 25px; }
   .desktop-primary-links .desktop-main-link { position: relative; display: flex; align-items: center; padding: 0; color: rgba(23,23,23,.68); border: 0; font-size: 12px; font-weight: 800; white-space: nowrap; }
@@ -439,7 +439,7 @@ h2 em, h1 em { color: var(--red); font-style: normal; }
   .desktop-primary-links { gap: 16px; }
   .desktop-primary-links .desktop-main-link { font-size: 11px; }
   .desktop-search { width: 150px; }
-  .desktop-delivery-selector { display: none; }
+  .desktop-delivery-selector { display: inline-flex; }
   .desktop-favorites-button { width: 38px; padding: 0; }
   .desktop-favorites-button span { display: none; }
 }
